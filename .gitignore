@@ -128,6 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+
 # Папки, создаваемые средой разработки
 .idea
 .DS_Store
@@ -144,3 +145,13 @@ dmypy.json
 .history/
 
 .mypy_cache
+=======
+# pip
+pip/
+
+# .vscode
+.vscode/
+
+
+.client
+
