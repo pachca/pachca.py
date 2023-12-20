@@ -1,17 +1,14 @@
-import os
-import unittest
-from unittest.mock import patch
-
-from client.session.client import HttpClient
+from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.messages_reactions import (LIST_REACTIONS, REACTION,
                                                REACTION_INCORRECT,
                                                URL_MESSAGE_REACTIONS)
 
 
-class MessagesReactionsTest(unittest.IsolatedAsyncioTestCase):
+class TestMessagesReactions(TestBaseClient):
+    """Тестирует запросы клиента к ресурсу '/messages/{id}/reactions'."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.url_messages_reactions = URL_MESSAGE_REACTIONS
         self.prepare_response_errors = PREPARE_RESPONSE_ERRORS
         self.prepare_reaction = REACTION
@@ -19,16 +16,14 @@ class MessagesReactionsTest(unittest.IsolatedAsyncioTestCase):
         self.prepare_response_list_reactions = LIST_REACTIONS
         self.prepare_response_correct_data = {}
 
-    async def asyncSetUp(self):
-        self.client = HttpClient(os.getenv('API_TOKEN'))
-        self.patch_client = patch(
-            'client.session.client.HttpClient._request')
-        self.mock = self.patch_client.start()
+    async def test_created_reaction(self) -> None:
+        """Тестирует метод 'post'.
+        Добавление реакции на сообщение.
 
-    async def asyncTearDown(self):
-        self.patch_client.stop()
-
-    async def test_created_reaction(self):
+        Проверяет корректность возвращаемых данных
+        (объект задачи, содержащийся в массиве data)
+        при безошибочном выполнении клиентом метода 'post'.
+        """
         self.mock.return_value = self.prepare_response_correct_data
         response = await self.client.post(
             self.url_messages_reactions,
@@ -38,7 +33,15 @@ class MessagesReactionsTest(unittest.IsolatedAsyncioTestCase):
             response,
             'При безошибочном выполнение запроса тело ответа отсутвует')
 
-    async def test_created_reaction_incorrect(self):
+    async def test_created_reaction_incorrect(self) -> None:
+        """Тестирует метод 'post'.
+        Добавление реакции на сообщение.
+
+        Проверяет корректность возвращаемых данных
+        (описание ошибки, содержащееся в массиве errors)
+        при выполнении клиентом метода 'post' с некорректными
+        данными.
+        """
         self.mock.return_value = self.prepare_response_errors
         response = await self.client.post(
             self.url_messages_reactions,
@@ -54,7 +57,14 @@ class MessagesReactionsTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_del_reaction(self):
+    async def test_del_reaction(self) -> None:
+        """Тестирует метод 'del'.
+        Удаление реакции на сообщение.
+
+        Проверяет корректность возвращаемых данных
+        (без тела ответа) при безошибочном выполнении
+        клиентом метода 'del'.
+        """
         self.mock.return_value = self.prepare_response_correct_data
         response = await self.client.delete(self.url_messages_reactions)
         self.assertEqual(
@@ -62,7 +72,15 @@ class MessagesReactionsTest(unittest.IsolatedAsyncioTestCase):
             response,
             'При безошибочном выполнение запроса тело ответа отсутвует')
 
-    async def test_del_incorrect(self):
+    async def test_del_incorrect(self) -> None:
+        """Тестирует метод 'del'.
+        Удаление реакции на сообщение.
+
+        Проверяет корректность возвращаемых данных
+        (описание ошибки, содержащееся в массиве errors)
+        при выполнении клиентом метода 'del' с некорректными
+        данными.
+        """
         self.mock.return_value = self.prepare_response_errors
         response = await self.client.delete(
             self.url_messages_reactions,
@@ -77,7 +95,14 @@ class MessagesReactionsTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_get_list_reactions(self):
+    async def test_get_list_reactions(self) -> None:
+        """Тестирует метод 'get'.
+        Получение актуального списка реакций.
+
+        Проверяет корректность возвращаемых данных
+        (список объектов/реакций, содержащийся в массиве data)
+        при безошибочном выполнении клиентом метода 'get'.
+        """
         self.mock.return_value = self.prepare_response_list_reactions
         response = await self.client.get(self.url_messages_reactions)
         self.assertEqual(
@@ -93,7 +118,14 @@ class MessagesReactionsTest(unittest.IsolatedAsyncioTestCase):
             list,
             'Ключ "data" содержит список')
 
-    async def test_get_list_reactions_incorrect(self):
+    async def test_get_list_reactions_incorrect(self) -> None:
+        """Тестирует метод 'get'.
+        Получение актуального списка реакций.
+
+        Проверяет корректность возвращаемых данных
+        (описание ошибки, содержащееся в массиве errors)
+        при выполении клиентом метода 'get' с некорректными параметрами пути.
+        """
         self.mock.return_value = self.prepare_response_errors
         response = await self.client.get(self.url_messages_reactions)
         self.assertEqual(
