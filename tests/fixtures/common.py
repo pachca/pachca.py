@@ -1,4 +1,4 @@
-PATCH_OBJECT = "session.client.HttpClient._request"
+PATCH_OBJECT = "client.session.client.HttpClient._request"
 DATA_ARRAY_MESSAGE = (
     "При безошибочном выполнении запроса должен возращаться массив data"
 )
