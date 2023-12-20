@@ -1,8 +1,4 @@
-import os
-import unittest
-from unittest.mock import patch
-
-from client.session.client import HttpClient
+from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.members_chats_channels import (PREPARE_CORRECT_MEMBERS,
                                                    PREPARE_CORRECT_TAGS,
@@ -14,9 +10,12 @@ from tests.fixtures.members_chats_channels import (PREPARE_CORRECT_MEMBERS,
                                                    URL_DEL_TAG)
 
 
-class MembersInChatsAndChannelsTest(unittest.IsolatedAsyncioTestCase):
+class TestMembersInChatsAndChannelsTest(TestBaseClient):
+    """Тестирует запросы клиента к ресурсам '/chats/{id}/members',
+    /chats/{id}/group_tags.
+    """
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.url_add_members = URL_ADD_MEMBERS
         self.url_del_member = URL_DEL_MEMBERS
         self.url_add_tags = URL_ADD_TAGS
@@ -48,16 +47,15 @@ class MembersInChatsAndChannelsTest(unittest.IsolatedAsyncioTestCase):
             self.prepare_incorrect_tags_data
         )
 
-    async def asyncSetUp(self):
-        self.client = HttpClient(os.getenv('API_TOKEN'))
-        self.patch_client = patch(
-            'client.session.client.HttpClient._request')
-        self.mock = self.patch_client.start()
+    async def test_add_correct_data(self) -> None:
+        """Тестирует метод 'post'.
+        Добавление пользователей в состав участников беседы/канала.
+        Добавление тегов в состав участников беседы/канала.
 
-    async def asyncTearDown(self):
-        self.patch_client.stop()
-
-    async def test_add_correct_data(self):
+        Проверяет корректность возвращаемых данных
+        (без тела ответа) при безошибочном выполнении
+        клиентом метода 'post'.
+        """
         self.mock.return_value = self.prepare_response_correct_data
         for data, url in zip(
                 self.prepare_add_correct_data, self.url_add_data):
@@ -69,7 +67,16 @@ class MembersInChatsAndChannelsTest(unittest.IsolatedAsyncioTestCase):
                     'При безошибочном выполнение запроса '
                     'тело ответа отсутвует')
 
-    async def test_add_incorrect_data(self):
+    async def test_add_incorrect_data(self) -> None:
+        """Тестирует метод 'post'.
+        Добавление пользователей в состав участников беседы/канала.
+        Добавление тегов в состав участников беседы/канала.
+
+        Проверяет корректность возвращаемых данных
+        (описание оишбки, содержащееся в массиве errors)
+        при выполении клиентом метода 'post' с
+        некорректными телом запроса.
+        """
         self.mock.return_value = self.prepare_response_errors
         for data, url in zip(
                 self.prepare_add_incorrect_data, self.url_add_data):
@@ -86,7 +93,15 @@ class MembersInChatsAndChannelsTest(unittest.IsolatedAsyncioTestCase):
                     dict,
                     'Должен возвращаться объект типа dict')
 
-    async def test_del_correct(self):
+    async def test_del_correct(self) -> None:
+        """Тестирует метод 'del'.
+        Исключение пользователя из состава участников беседы/канала.
+        Исключение тега из состава участников беседы/канала.
+
+        Проверяет корректность возвращаемых данных
+        (без тела ответа) при безошибочном выполнении
+        клиентом метода 'del'.
+        """
         self.mock.return_value = self.prepare_response_correct_data
         for url in self.url_del:
             with self.subTest(url):
@@ -97,7 +112,16 @@ class MembersInChatsAndChannelsTest(unittest.IsolatedAsyncioTestCase):
                     'При безошибочном выполнение запроса '
                     'тело ответа отсутвует')
 
-    async def test_del_incorrect(self):
+    async def test_del_incorrect(self) -> None:
+        """Тестирует метод 'del'.
+        Исключение пользователя из состава участников беседы/канала.
+        Исключение тега из состава участников беседы/канала.
+
+        Проверяет корректность возвращаемых данных
+        (описание оишбки, содержащееся в массиве errors)
+        при выполении клиентом метода 'del' с
+        некорректными параметрами пути.
+        """
         self.mock.return_value = self.prepare_response_errors
         for url in self.url_del:
             with self.subTest(url):

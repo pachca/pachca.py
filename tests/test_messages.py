@@ -1,8 +1,4 @@
-import os
-import unittest
-from unittest.mock import patch
-
-from client.session.client import HttpClient
+from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.messages import (EDIT_MESSAGE, INFO_MESSAGES,
                                      LIST_MESSAGES, NEW_MESSAGE,
@@ -11,9 +7,10 @@ from tests.fixtures.messages import (EDIT_MESSAGE, INFO_MESSAGES,
                                      URL_MESSAGE_INFO, URL_MESSAGES)
 
 
-class MessagesTest(unittest.IsolatedAsyncioTestCase):
+class TestMessages(TestBaseClient):
+    """Тестирует запросы клиента к ресурсу '/messages'."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.url_messages = URL_MESSAGES
         self.url_message_info = URL_MESSAGE_INFO
         self.prepare_response_errors = PREPARE_RESPONSE_ERRORS
@@ -24,16 +21,15 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
         self.prepare_info_list_message = LIST_MESSAGES
         self.prepare_edit_message = EDIT_MESSAGE
 
-    async def asyncSetUp(self):
-        self.client = HttpClient(os.getenv('API_TOKEN'))
-        self.patch_client = patch(
-            'client.session.client.HttpClient._request')
-        self.mock = self.patch_client.start()
+    async def test_created_new_messages(self) -> None:
+        """Тестирует метод 'post'.
+        Создание нового сообщения в беседу или канал,
+        личного сообщения пользователю или комментария в тред.
 
-    async def asyncTearDown(self):
-        self.patch_client.stop()
-
-    async def test_created_new_messages(self):
+        Проверяет корректность возвращаемых данных
+        (объект сообщения, содержащийся в массиве data)
+        при безошибочном выполнении клиентом метода 'post'.
+        """
         self.mock.return_value = self.prepare_response_new_message_data
         response = await self.client.post(
             self.url_messages,
@@ -52,7 +48,15 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_created_new_messages_incorrect(self):
+    async def test_created_new_messages_incorrect(self) -> None:
+        """Тестирует метод 'post'.
+        Создание нового сообщения в беседу или канал,
+        личного сообщения пользователю или комментария в тред.
+
+        Проверяет корректность возвращаемых данных
+        (описание ошибки, содержащееся в массиве errors)
+        при выполении клиентом метода 'post' с некорректными телом запроса.
+        """
         self.mock.return_value = self.prepare_response_errors
         response = await self.client.post(
             self.url_messages,
@@ -66,7 +70,14 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_get_message_info(self):
+    async def test_get_message_info(self) -> None:
+        """Тестирует метод 'get'.
+        Получение информации о сообщение по id.
+
+        Проверяет корректность возвращаемых данных
+        (объект сообщения, содержащийся в массиве data)
+        при безошибочном выполнении клиентом метода 'get'.
+        """
         self.mock.return_value = self.prepare_info_message
         response = await self.client.get(self.url_message_info)
         self.assertEqual(
@@ -79,7 +90,15 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_get_message_info_incorrect(self):
+    async def test_get_message_info_incorrect(self) -> None:
+        """Тестирует метод 'get'.
+        Получение информации о сообщение по id.
+
+        Проверяет корректность возвращаемых данных
+        (описание ошибки, содержащееся в массиве errors)
+        при выполении клиентом метода 'get' с
+        некорректными параметрами пути.
+        """
         self.mock.return_value = self.prepare_response_errors
         response = await self.client.get(self.url_message_info)
         self.assertEqual(
@@ -92,7 +111,14 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_get_list_messages(self):
+    async def test_get_list_messages(self) -> None:
+        """Тестирует метод 'get'.
+        Получение списка сообщений.
+
+        Проверяет корректность возвращаемых данных
+        (список объектов/сообщений, содержащийся в массиве data)
+        при безошибочном выполнении клиентом метода 'get'.
+        """
         self.mock.return_value = self.prepare_info_list_message
         response = await self.client.get(self.url_messages)
         self.assertEqual(
@@ -108,7 +134,15 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
             list,
             'Ключ "data" содержит список')
 
-    async def test_get_list_messages_incorrect(self):
+    async def test_get_list_messages_incorrect(self) -> None:
+        """Тестирует метод 'get'.
+        Получение списка сообщений.
+
+        Проверяет корректность возвращаемых данных
+        (описание ошибки, содержащееся в массиве errors)
+        при выполении клиентом метода 'get' с
+        некорректными параметрами пути.
+        """
         self.mock.return_value = self.prepare_response_errors
         response = await self.client.get(self.url_messages)
         self.assertEqual(
@@ -120,7 +154,14 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_edit_messages(self):
+    async def test_edit_messages(self) -> None:
+        """Тестирует метод 'put'.
+        Редактирование сообщения по указанному идентификатору.
+
+        Проверяет корректность возвращаемых данных
+        (объект сообщения, содержащийся в массиве data)
+        при безошибочном выполнении клиентом метода 'put'.
+        """
         self.mock.return_value = self.prepare_response_new_message_data
         response = await self.client.put(
             self.url_message_info,
@@ -135,7 +176,15 @@ class MessagesTest(unittest.IsolatedAsyncioTestCase):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_edit_messages_incorrect(self):
+    async def test_edit_messages_incorrect(self) -> None:
+        """Тестирует метод 'put'.
+        Редактирование сообщения по указанному идентификатору.
+
+        Проверяет корректность возвращаемых данных
+        (описание ошибки, содержащееся в массиве errors)
+        при выполении клиентом метода 'put' с
+        некорректным идентификатором сообщения.
+        """
         self.mock.return_value = self.prepare_response_errors
         response = await self.client.put(
             self.url_messages,
