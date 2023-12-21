@@ -18,5 +18,11 @@ class RequestData(BaseModel):
     channel: bool = None
     public: bool = None
 
-    async def to_dict(self):
+    def __init__(self, data: dict = None):
+        super().__init__()
+        if data is not None:
+            for key, value in data.items():
+                setattr(self, key, value)
+
+    def to_dict(self):
         return self.__dict__
