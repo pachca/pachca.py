@@ -24,7 +24,7 @@ class TestCommonMethods(TestBaseClient):
         (список объектов дополнительных свойств, содержащийся
         в массиве 'data') при безошибочном выполнении клиентом метода 'get'.
         """
-        self.mock_request.return_value = EXPECT_RESPONSE_DATA_PROPERTIES
+        self.mock.return_value = EXPECT_RESPONSE_DATA_PROPERTIES
         response = await self.client.get(self.base_url_properties)
         self.assertEqual(
             response,
@@ -40,7 +40,7 @@ class TestCommonMethods(TestBaseClient):
         (уникальный набор параметров для загрузки файлов) при
         безошибочном выполнении клиентом метода 'post'.
         """
-        self.mock_request.return_value = EXPECT_RESPONSE_DATA_UPLOADS
+        self.mock.return_value = EXPECT_RESPONSE_DATA_UPLOADS
         response = await self.client.post(self.base_url_uploads, None)
         self.assertEqual(
             response,
@@ -56,7 +56,7 @@ class TestCommonMethods(TestBaseClient):
         безошибочном выполнении клиентом метода 'post'.
         """
         expect_response_data = {}
-        self.mock_request.return_value = expect_response_data
+        self.mock.return_value = expect_response_data
         upload_params = POST_DATA_UPLOADS
         upload_file = __file__
         with open(upload_file, "rb") as file:
@@ -78,7 +78,7 @@ class TestCommonMethods(TestBaseClient):
         Message будут указаны подробности) при
         выполнении клиентом метода 'post' c некорректными параметрами.
         """
-        self.mock_request.return_value = {"text": ERROR_XML}
+        self.mock.return_value = {"text": ERROR_XML}
         upload_params = UPLOAD_FILE_INCORRECT_DATA
         response = await self.client.post(
             self.base_url_upload_file, upload_params

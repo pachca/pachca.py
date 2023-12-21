@@ -34,7 +34,7 @@ class TestChats(TestBaseClient):
         for data, url in zip(response_data, urls):
             with self.subTest(data=data, url=url):
                 expect_response_data = data
-                self.mock_request.return_value = data
+                self.mock.return_value = data
                 response = await self.client.get(url)
                 self.assertEqual(
                     response,
@@ -50,7 +50,7 @@ class TestChats(TestBaseClient):
         при безошибочном выполении клиентом метода 'post'.
         """
         new_chat_data = NEW_CHAT_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_DATA_CHAT
+        self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
         response = await self.client.post(self.chats_url, new_chat_data)
         self.assertEqual(
             response,
@@ -68,7 +68,7 @@ class TestChats(TestBaseClient):
         некорректными телом запроса.
         """
         new_chat_data = INCORRECT_CHAT_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_ERRORS
+        self.mock.return_value = EXPECT_RESPONSE_ERRORS
         response = await self.client.post(self.chats_url, new_chat_data)
         self.assertEqual(
             response,
@@ -84,7 +84,7 @@ class TestChats(TestBaseClient):
         при безошибочном выполении клиентом метода 'put'.
         """
         update_chat_data = UPDATE_CHAT_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_DATA_CHAT
+        self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
         response = await self.client.put(
             urljoin(self.chats_url, TEST_ID),
             update_chat_data
@@ -105,7 +105,7 @@ class TestChats(TestBaseClient):
         некорректными телом запроса.
         """
         new_chat_data = INCORRECT_CHAT_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_ERRORS
+        self.mock.return_value = EXPECT_RESPONSE_ERRORS
         response = await self.client.put(
             urljoin(self.chats_url, TEST_ID),
             new_chat_data

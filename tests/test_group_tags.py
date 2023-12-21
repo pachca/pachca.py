@@ -31,7 +31,7 @@ class TestGroupTags(TestBaseClient):
         for data, url in zip(response_data, urls):
             with self.subTest(data=data, url=url):
                 expect_response_data = data
-                self.mock_request.return_value = data
+                self.mock.return_value = data
                 response = await self.client.get(url)
                 self.assertEqual(
                     response,

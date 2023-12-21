@@ -12,7 +12,7 @@ class TestBaseClient(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.client = HttpClient(os.getenv("API_TOKEN"))
         self.mock_get_patcher = patch(PATCH_OBJECT)
-        self.mock_request = self.mock_get_patcher.start()
+        self.mock = self.mock_get_patcher.start()
 
     async def asyncTearDown(self):
         self.mock_get_patcher.stop()

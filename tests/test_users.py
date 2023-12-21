@@ -35,7 +35,7 @@ class TestUsers(TestBaseClient):
         for data, url in zip(response_data, urls):
             with self.subTest(data=data, url=url):
                 expect_response_data = data
-                self.mock_request.return_value = data
+                self.mock.return_value = data
                 response = await self.client.get(url)
                 self.assertEqual(
                     response,
@@ -51,7 +51,7 @@ class TestUsers(TestBaseClient):
         при безошибочном выполнении клиентом метода 'post'.
         """
         new_user_data = NEW_USER_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_DATA_USER
+        self.mock.return_value = EXPECT_RESPONSE_DATA_USER
         response = await self.client.post(self.users_url, new_user_data)
         self.assertEqual(
             response,
@@ -69,7 +69,7 @@ class TestUsers(TestBaseClient):
         некорректным телом запроса.
         """
         new_user_data = INCORRECT_USER_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_ERRORS
+        self.mock.return_value = EXPECT_RESPONSE_ERRORS
         response = await self.client.post(self.users_url, new_user_data)
         self.assertEqual(
             response,
@@ -85,7 +85,7 @@ class TestUsers(TestBaseClient):
         при безошибочном выполнении клиентом метода 'patch'.
         """
         update_user_data = UPDATE_USER_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_DATA_USER
+        self.mock.return_value = EXPECT_RESPONSE_DATA_USER
         response = await self.client.put(urljoin(
             self.users_url, TEST_ID), update_user_data
         )
@@ -105,7 +105,7 @@ class TestUsers(TestBaseClient):
         некорректным телом запроса.
         """
         new_user_data = INCORRECT_USER_DATA
-        self.mock_request.return_value = EXPECT_RESPONSE_ERRORS
+        self.mock.return_value = EXPECT_RESPONSE_ERRORS
         response = await self.client.put(
             urljoin(self.users_url, TEST_ID),
             new_user_data
@@ -124,7 +124,7 @@ class TestUsers(TestBaseClient):
         клиентом метода 'delete'.
         """
         expect_resposne_data = {}
-        self.mock_request.return_value = {}
+        self.mock.return_value = {}
         response = await self.client.delete(urljoin(self.users_url, TEST_ID))
         self.assertEqual(
             response,
