@@ -8,3 +8,15 @@ class Request(BaseModel):
     url: str = None
     acceptable_statuses: tuple[int] = None
     data: Dict[str, Optional[Any]] = None
+
+
+class RequestData(BaseModel):
+
+    name: str = None
+    member_ids: tuple[int] = None
+    group_tag_ids: tuple[int] = None
+    channel: bool = None
+    public: bool = None
+
+    async def to_dict(self):
+        return self.__dict__

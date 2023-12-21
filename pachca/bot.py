@@ -1,5 +1,3 @@
-import asyncio
-
 from client import HttpClient
 from methods import BotMethods
 
@@ -56,11 +54,3 @@ class Bot:
 
         """
         return await BotMethods.create_user(self.client, data=data)
-
-
-async def main(token='YrIvO84kJukmR8J9yrWF2SYApQepMbxDsvRUzZOFTIU'):
-    bot = Bot(token)
-    response = await bot.get_users()
-    print(response)
-
-asyncio.run(main())
