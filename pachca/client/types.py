@@ -10,13 +10,14 @@ class Request(BaseModel):
     data: Dict[str, Optional[Any]] = None
 
 
-class RequestData(BaseModel):
+class BaseRequestData(BaseModel):
 
-    name: str = None
-    member_ids: tuple[int] = None
-    group_tag_ids: tuple[int] = None
-    channel: bool = None
-    public: bool = None
+    # name: str = None
+    # member_ids: tuple[int] = None
+    # group_tag_ids: tuple[int] = None
+    # channel: bool = None
+    # public: bool = None
+    # code: str = None
 
     def __init__(self, data: dict = None):
         super().__init__()
@@ -26,3 +27,7 @@ class RequestData(BaseModel):
 
     def to_dict(self):
         return self.__dict__
+
+
+class RequestReactionData(BaseRequestData):
+    code: str = None
