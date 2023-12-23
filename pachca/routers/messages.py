@@ -1,4 +1,4 @@
-from http import HTTPStatus, HTTPMethod
+from http import HTTPMethod, HTTPStatus
 
 from client import Request
 from .base import BaseRouter
@@ -22,7 +22,7 @@ class MessagesRouter(BaseRouter):
         pass
 
     @classmethod
-    def add_reaction(cls, id: int):
+    def add_reaction(cls, id: int) -> Request:
         return Request(
             url=cls._make_endpoint(cls.URL_REACTIONS).format(id=id),
             acceptable_statuses=(HTTPStatus.CREATED,),
@@ -38,10 +38,10 @@ class MessagesRouter(BaseRouter):
         )
 
     @classmethod
-    def delete_reaction(cls, id: int):
+    def delete_reaction(cls, id: int) -> Request:
         return Request(
             url=cls._make_endpoint(cls.URL_REACTIONS).format(id=id),
-            acceptable_statuses=(HTTPStatus.OK,),
+            acceptable_statuses=(HTTPStatus.NO_CONTENT,),
             http_method=HTTPMethod.DELETE.lower()
         )
 
@@ -50,7 +50,7 @@ class MessagesRouter(BaseRouter):
         pass
 
     @classmethod
-    def create_threade(cls, id: int):
+    def create_threade(cls, id: int) -> Request:
         return Request(
             url=cls._make_endpoint(cls.URL_THREAD).format(id=id),
             acceptable_statuses=(HTTPStatus.CREATED,),

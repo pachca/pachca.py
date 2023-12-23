@@ -1,6 +1,6 @@
-from routers import Router
-from client import BaseRequestData, Request, RequestReactionData, HttpClient
+from client import HttpClient, Request, RequestData
 from pydantic import ValidationError
+from routers import Router
 
 
 class MessagesMethods:
@@ -16,13 +16,13 @@ class MessagesMethods:
 
     @classmethod
     async def add_reaction(cls, id: int, client: HttpClient, data: dict):
-        request: Request = Router.delete_reaction(id)
+        request: Request = Router.add_reaction(id)
         try:
-            data: BaseRequestData = RequestReactionData(data)
-        except ValidationError as e:
-            raise e.errors()
+            data: RequestData = RequestData(data)
+        except ValidationError as error:
+            raise error.errors()
         else:
-            request.data = {'code': data.to_dict()}
+            request.data = {data.to_dict()}
             return await client.make_request(request)
 
     @classmethod
@@ -34,11 +34,11 @@ class MessagesMethods:
     async def delete_reaction(cls, id: int, client: HttpClient, data: dict):
         request: Request = Router.delete_reaction(id)
         try:
-            data: BaseRequestData = RequestReactionData(data)
-        except ValidationError as e:
-            raise e.errors()
+            data: RequestData = RequestData(data)
+        except ValidationError as error:
+            raise error.errors()
         else:
-            request.data = {'code': data.to_dict()}
+            request.data = {data.to_dict()}
             return await client.make_request(request)
 
     async def send_messages(cls, *args, **kwargs):

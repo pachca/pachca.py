@@ -1,1 +1,1 @@
-from .router import Router # noqa
+from .router import Router  # noqa
