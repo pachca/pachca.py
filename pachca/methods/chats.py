@@ -21,9 +21,13 @@ class ChatsMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def add_members_to_chat(cls, *args, **kwargs):
-        pass
+    async def add_members_to_chat(cls, client: HttpClient, data: dict):
+        request: Request = Router.add_members_to_chat()
+        request.data = {'member_ids': RequestData(data).to_dict()}
+        return await client.make_request(request)
 
     @classmethod
-    async def add_tags_to_chat(cls, *args, **kwargs):
-        pass
+    async def add_tags_to_chat(cls, client: HttpClient, data: dict):
+        request: Request = Router.add_tags_to_chat()
+        request.data = {'group_tag_ids': RequestData(data).to_dict()}
+        return await client.make_request(request)

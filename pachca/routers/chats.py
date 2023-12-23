@@ -33,9 +33,17 @@ class ChatsRouter(BaseRouter):
         )
 
     @classmethod
-    def add_members_to_chat(cls, *args, **kwargs):
-        pass
+    def add_members_to_chat(cls, id: int) -> Request:
+        return Request(
+            url=cls._make_endpoint(cls.URL).format(id=id),
+            acceptable_statuses=(HTTPStatus.CREATED,),
+            http_method=HTTPMethod.POST.lower()
+        )
 
     @classmethod
-    def add_tags_to_chat(cls, *args, **kwargs):
-        pass
+    def add_tags_to_chat(cls, id: int) -> Request:
+        return Request(
+            url=cls._make_endpoint(cls.URL).format(id=id),
+            acceptable_statuses=(HTTPStatus.CREATED,),
+            http_method=HTTPMethod.POST.lower()
+        )
