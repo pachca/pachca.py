@@ -5,12 +5,14 @@ from routers import Router
 class ChatsMethods:
 
     @classmethod
-    async def get_chats(cls, *args, **kwargs):
-        pass
+    async def get_chats(cls, client: HttpClient):
+        request: Request = Router.get_chats()
+        return await client.make_request(request)
 
     @classmethod
-    async def get_chat_by_id(cls, *args, **kwargs):
-        pass
+    async def get_chat_by_id(cls, client: HttpClient, id: int):
+        request: Request = Router.get_chat_by_id(id)
+        return await client.make_request(request)
 
     @classmethod
     async def create_chat(cls, client: HttpClient, data: dict):

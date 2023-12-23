@@ -9,12 +9,20 @@ class ChatsRouter(BaseRouter):
     URL: str = 'chats/{id}'
 
     @classmethod
-    def get_chats(cls, *args, **kwargs):
-        pass
+    def get_chats(cls) -> Request:
+        return Request(
+            url=cls._make_endpoint(cls.URL).format(id=''),
+            acceptable_statuses=(HTTPStatus.OK,),
+            http_method=HTTPMethod.GET.lower()
+        )
 
     @classmethod
-    def get_chat_by_id(cls, *args, **kwargs):
-        pass
+    def get_chat_by_id(cls, id: int) -> Request:
+        return Request(
+            url=cls._make_endpoint(cls.URL).format(id=id),
+            acceptable_statuses=(HTTPStatus.OK,),
+            http_method=HTTPMethod.GET.lower()
+        )
 
     @classmethod
     def create_chat(cls) -> Request:
