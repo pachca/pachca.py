@@ -23,5 +23,5 @@ class ChatsMethods:
         pass
 
     @classmethod
-    async def add_tags_to_chat(cls, *args, **kwargs):
+    async def add_tags_to_chat(cls):
         pass

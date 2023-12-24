@@ -4,15 +4,28 @@ from pydantic import BaseModel
 class ChatData(BaseModel):
 
     name: str
-    member_ids: tuple[int] = None
-    group_tag_ids: tuple[int] = None
-    channel: bool = None
-    public: bool = None
+    public: bool = False
+
+
+class TaskData(BaseModel):
+
+    kind: str
+    content: str = None
+    due_at: str = None
+    priority: int = None
+    performer_ids: list[int] = None
 
 
 class RequestData(BaseModel):
 
+    task: TaskData = None
     chat: ChatData = None
+
+    def __init__(self, data: dict = None):
+        super().__init__()
+        if data is not None:
+            for key, value in data.items():
+                setattr(self, key, value)
 
     def to_dict(self):
         return self.model_dump(exclude_none=True)
