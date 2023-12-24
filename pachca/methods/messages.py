@@ -18,7 +18,7 @@ class MessagesMethods:
     async def add_reaction(cls, id: int, client: HttpClient, data: dict):
         request: Request = Router.add_reaction(id)
         try:
-            data: RequestData = RequestData(data)
+            data: RequestData = RequestData(**data)
         except ValidationError as error:
             raise error.errors()
         else:
@@ -34,7 +34,7 @@ class MessagesMethods:
     async def delete_reaction(cls, id: int, client: HttpClient, data: dict):
         request: Request = Router.delete_reaction(id)
         try:
-            data: RequestData = RequestData(data)
+            data: RequestData = RequestData(**data)
         except ValidationError as error:
             raise error.errors()
         else:
