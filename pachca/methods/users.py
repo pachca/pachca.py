@@ -10,9 +10,6 @@ class UserMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def get_user_by_id(cls, id: int):
-        pass
-
-    @classmethod
-    async def create_user(cls, data):
-        pass
+    async def get_user_by_id(cls, client: HttpClient, id: int):
+        request: Request = Router.get_user_by_id(id)
+        return await client.make_request(request)
