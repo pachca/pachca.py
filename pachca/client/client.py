@@ -1,4 +1,5 @@
 from aiohttp import ClientConnectionError
+from http import HTTPStatus
 
 from .types import Request
 from .session import Session
@@ -23,6 +24,8 @@ class HttpClient:
                 session, request.http_method)(
                     request.url, json=request.data)
             await self._session.close()
+            if response.status == HTTPStatus.NO_CONTENT:
+                return ''
             resp_json = await response.json()
             if response.status not in request.acceptable_statuses:
                 message = ', '.join(
