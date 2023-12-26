@@ -3,10 +3,27 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+class File(BaseModel):
+
+    key: str
+    name: str
+    file_type: str
+    size: int
+
+
 class ChatData(BaseModel):
 
     name: str
     public: Optional[bool] = False
+
+
+class MessagesData(BaseModel):
+
+    entity_type: Optional[str] = None
+    entity_id: int = None
+    parrent_message_id: Optional[int] = None
+    content: str
+    files: Optional[list[File]] = None
 
 
 class TaskData(BaseModel):
@@ -20,6 +37,7 @@ class TaskData(BaseModel):
 
 class RequestData(BaseModel):
     
+    message: Optional[MessagesData] = None
     code: Optional[str] = None
     task: Optional[TaskData] = None
     chat: Optional[ChatData] = None
