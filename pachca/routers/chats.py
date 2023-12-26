@@ -1,4 +1,4 @@
-from http import HTTPStatus, HTTPMethod
+from http import HTTPMethod, HTTPStatus
 
 from client import Request
 from .base import BaseRouter
@@ -6,7 +6,7 @@ from .base import BaseRouter
 
 class ChatsRouter(BaseRouter):
 
-    URL: str = 'chats/{id}'
+    __URL: str = 'chats/{id}'
 
     @classmethod
     def get_chats(cls, *args, **kwargs):
@@ -19,7 +19,7 @@ class ChatsRouter(BaseRouter):
     @classmethod
     def create_chat(cls) -> Request:
         return Request(
-            url=cls._make_endpoint(cls.URL).format(id=''),
+            url=cls._make_endpoint(cls.__URL).format(id=''),
             acceptable_statuses=(HTTPStatus.CREATED,),
             http_method=HTTPMethod.POST.lower()
         )
