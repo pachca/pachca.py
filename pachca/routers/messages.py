@@ -22,7 +22,6 @@ class MessagesRouter(BaseRouter):
 
     @classmethod
     def get_messages(cls, chat_id, per, page) -> Request:
-        print(cls.URL_MESSAGES)
         return Request(
             url=cls._make_endpoint(cls.URL_CHAT_MESSAGES).format(
                 chat_id=chat_id, page=page, per=per

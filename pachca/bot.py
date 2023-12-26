@@ -92,7 +92,7 @@ class Bot:
         return await BotMethods.send_messages(self.client, message)
 
     async def get_messages(
-        self, chat_id: int, per: int = None, page: int = None
+        self, chat_id: int, per: int = None, page: int = 1
     ) -> list[dict]:
         """
         Метод для получения списка сообщений.

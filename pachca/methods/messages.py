@@ -10,7 +10,6 @@ class MessagesMethods:
     ) -> dict:
         request: Request = Router.send_messages()
         request.data = RequestData(**data).to_dict()
-        print(request.data)
         return await client.make_request(request)
 
     @classmethod
