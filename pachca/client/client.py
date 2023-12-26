@@ -1,4 +1,5 @@
 from aiohttp import ClientConnectionError
+from http import HTTPStatus
 
 from .errors import ApiClientException, WrongStatusError
 from .session import Session
@@ -23,10 +24,19 @@ class HttpClient:
                 session, request.http_method)(request.url, json=request.data)
                 # session, request.http_method)(request.url, data=request.data)
             await self._session.close()
+            if response.status == HTTPStatus.NO_CONTENT:
+                return ''
+            resp_json = await response.json()
             if response.status not in request.acceptable_statuses:
-                raise WrongStatusError(response.status)
             # if 'json' not in response.content_type:
             #     return None
-            return await response.json()
+                message = ', '.join(
+                    [error['message'] for error in resp_json['errors']]
+                )
+                raise WrongStatusError({
+                    'status': response.status,
+                    'message': message
+                })
+            return resp_json
         except (ConnectionError, TimeoutError, ClientConnectionError) as error:
-            raise ApiClientException('Ошибка', error)
+            raise ApiClientException('Ошибка подключения', error)
