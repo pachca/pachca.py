@@ -217,14 +217,3 @@ class Bot:
         Метод для создания новой задачи.
         """
         return await BotMethods.create_task(self.client, task)
-
-
-import asyncio
-
-async def main():
-    bot = Bot('YrIvO84kJukmR8J9yrWF2SYApQepMbxDsvRUzZOFTIU')
-    data = {'code': '1'}
-    r = await bot.add_reaction(message_id=114215184, data=data)
-    print(r)
-
-asyncio.run(main())
