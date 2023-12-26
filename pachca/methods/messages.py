@@ -1,5 +1,4 @@
 from client import HttpClient, Request, RequestData
-from pydantic import ValidationError
 
 from routers import Router
 
@@ -50,13 +49,8 @@ class MessagesMethods:
     @classmethod
     async def delete_reaction(cls, id: int, client: HttpClient, data: dict):
         request: Request = Router.delete_reaction(id)
-        try:
-            data: RequestData = RequestData(**data)
-        except ValidationError as error:
-            raise error.errors()
-        else:
-            request.data = {data.to_dict()}
-            return await client.make_request(request)
+        request.data: RequestData = RequestData(**data).to_dict()
+        return await client.make_request(request)
 
     @classmethod
     async def create_threade(cls, id: int, client: HttpClient):
