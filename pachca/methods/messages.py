@@ -1,7 +1,4 @@
-from typing import Any
-
-from client import (HttpClient, Request, RequestMessagesCreateData,
-                    RequestMessagesUpdateData)
+from client import HttpClient, Request, RequestData
 from routers import Router
 
 
@@ -9,30 +6,33 @@ class MessagesMethods:
 
     @classmethod
     async def send_messages(
-        cls, client: HttpClient, data: dict[str, Any]
-    ) -> dict[str, Any]:
+        cls, client: HttpClient, data: dict
+    ) -> dict:
         request: Request = Router.send_messages()
-        request.data = {'message': RequestMessagesCreateData(data).to_dict()}
+        request.data = RequestData(**data).to_dict()
+        print(request.data)
         return await client.make_request(request)
 
     @classmethod
-    async def get_messages(cls, client: HttpClient) -> dict[str, Any]:
-        request: Request = Router.get_messages()
+    async def get_messages(
+        cls, client: HttpClient, chat_id: int, per: int, page: int
+    ) -> dict:
+        request: Request = Router.get_messages(chat_id, per, page)
         return await client.make_request(request)
 
     @classmethod
     async def get_message_by_id(
         cls, client: HttpClient, id: int
-    ) -> dict[str, Any]:
+    ) -> dict:
         request: Request = Router.get_message_by_id(id)
         return await client.make_request(request)
 
     @classmethod
     async def edit_message(
-        cls, client: HttpClient, id: int, data: dict[str, Any]
-    ) -> dict[str, Any]:
+        cls, client: HttpClient, id: int, data: dict
+    ) -> dict:
         request: Request = Router.edit_message(id)
-        request.data = {'message': RequestMessagesUpdateData(data).to_dict()}
+        request.data = RequestData(**data).to_dict()
         return await client.make_request(request)
 
     async def add_reaction(cls, *args, **kwargs):

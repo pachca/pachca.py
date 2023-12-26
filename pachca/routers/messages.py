@@ -7,6 +7,9 @@ from .base import BaseRouter
 
 class MessagesRouter(BaseRouter):
 
+    URL_CHAT_MESSAGES: str = (
+        'messages/?chat_id={chat_id}&per={per}&page={page}'
+    )
     URL_MESSAGES: str = 'messages/{id}'
 
     @classmethod
@@ -18,9 +21,12 @@ class MessagesRouter(BaseRouter):
         )
 
     @classmethod
-    def get_messages(cls) -> Request:
+    def get_messages(cls, chat_id, per, page) -> Request:
+        print(cls.URL_MESSAGES)
         return Request(
-            url=cls._make_endpoint(cls.URL_MESSAGES).format(id=''),
+            url=cls._make_endpoint(cls.URL_CHAT_MESSAGES).format(
+                chat_id=chat_id, page=page, per=per
+            ),
             acceptable_statuses=(HTTPStatus.OK,),
             http_method=HTTPMethod.GET.lower()
         )
