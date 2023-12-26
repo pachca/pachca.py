@@ -1,5 +1,4 @@
 from aiohttp import ClientConnectionError
-from http import HTTPStatus
 
 from .errors import ApiClientException, WrongStatusError
 from .session import Session
