@@ -128,7 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
 # Папки, создаваемые средой разработки
 .idea
 .DS_Store
@@ -140,18 +139,14 @@ dmypy.json
 
 .vscode/
 *.code-workspace
+.vscode/
 
 # Local History for Visual Studio Code
 .history/
 
 .mypy_cache
-=======
+
 # pip
 pip/
 
-# .vscode
-.vscode/
-
-
 .client
-
