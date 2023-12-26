@@ -205,8 +205,26 @@ class Bot:
         """
         return await BotMethods.add_tags_to_chat(self.client, group_tag_ids)
 
+    async def add_reaction(self, message_id, data):
+        """
+        lol
+        """
+        return await BotMethods.add_reaction(self.client,
+                                             id=message_id, data=data)
+
     async def create_task(self, task: dict):
         """
         Метод для создания новой задачи.
         """
         return await BotMethods.create_task(self.client, task)
+
+
+import asyncio
+
+async def main():
+    bot = Bot('YrIvO84kJukmR8J9yrWF2SYApQepMbxDsvRUzZOFTIU')
+    data = {'code': '1'}
+    r = await bot.add_reaction(message_id=114215184, data=data)
+    print(r)
+
+asyncio.run(main())

@@ -37,15 +37,10 @@ class MessagesMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def add_reaction(cls, id: int, client: HttpClient, data: dict):
+    async def add_reaction(cls, client: HttpClient, id: int, data: dict):
         request: Request = Router.add_reaction(id)
-        try:
-            data: RequestData = RequestData(**data)
-        except ValidationError as error:
-            raise error.errors()
-        else:
-            request.data = {data.to_dict()}
-            return await client.make_request(request)
+        request.data: RequestData = RequestData(**data).to_dict()
+        return await client.make_request(request)
 
     @classmethod
     async def get_reactions(cls, id: int, client: HttpClient):

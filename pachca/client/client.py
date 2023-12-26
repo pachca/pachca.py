@@ -24,7 +24,7 @@ class HttpClient:
                 session, request.http_method)(request.url, json=request.data,
                                               data=request.file_data)
             await self._session.close()
-            if response.status == HTTPStatus.NO_CONTENT:
+            if not response.content_length:
                 return ''
             resp_json = await response.json()
             if response.status not in request.acceptable_statuses:
