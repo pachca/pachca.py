@@ -1,0 +1,1 @@
+PREPARE_RESPONSE_ERRORS = {'errors': {}}
