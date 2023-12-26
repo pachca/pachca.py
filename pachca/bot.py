@@ -27,10 +27,10 @@ class Bot:
         return await BotMethods.get_user_by_id(self.client, id=id)
 
     async def get_group_tags(self):
-        return await BotMethods.list_group_tags(self.client)
+        return await BotMethods.get_group_tags(self.client)
 
     async def get_tag_users(self, tag_id):
-        return await BotMethods.list_tag_users(self.client, tag_id=tag_id)
+        return await BotMethods.get_group_tag_users(self.client, tag_id=tag_id)
 
     async def create_chat(self, chat: dict):
         """
