@@ -1,5 +1,5 @@
-from routers import Router
 from client import HttpClient, Request
+from routers import Router
 
 
 class UserMethods:

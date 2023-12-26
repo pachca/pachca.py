@@ -1,9 +1,9 @@
 from aiohttp import ClientConnectionError
 from http import HTTPStatus
 
-from .types import Request
+from .errors import ApiClientException, WrongStatusError
 from .session import Session
-from .errors import WrongStatusError, ApiClientException
+from .types import Request
 
 
 class HttpClient:

@@ -19,7 +19,8 @@ class TaskData(BaseModel):
 
 
 class RequestData(BaseModel):
-
+    
+    code: Optional[str] = None
     task: Optional[TaskData] = None
     chat: Optional[ChatData] = None
 
