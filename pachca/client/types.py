@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel
 
@@ -36,7 +36,7 @@ class TaskData(BaseModel):
 
 
 class RequestData(BaseModel):
-    
+
     message: Optional[MessagesData] = None
     code: Optional[str] = None
     task: Optional[TaskData] = None
@@ -51,3 +51,4 @@ class Request(BaseModel):
     url: str = None
     acceptable_statuses: tuple[int] = None
     data: Optional[RequestData] = None
+    file_data: Optional[dict[str, Any]] = None

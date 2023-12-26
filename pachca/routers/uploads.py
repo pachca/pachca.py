@@ -7,12 +7,12 @@ from .base import BaseRouter
 
 class UploadsRouter(BaseRouter):
 
-    URL_UPLOADS: str = 'uploads/'
+    __URL: str = 'uploads/'
 
     @classmethod
-    def get_uploading_unique_params(cls) -> Request:
+    def uploads(cls) -> Request:
         return Request(
-            url=cls._make_endpoint(cls.URL_UPLOADS),
+            url=cls._make_endpoint(cls.__URL),
             acceptable_statuses=(HTTPStatus.OK,),
             http_method=HTTPMethod.POST.lower()
         )

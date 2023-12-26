@@ -12,7 +12,7 @@ class ChatsRouter(BaseRouter):
     @classmethod
     def get_chats(cls) -> Request:
         return Request(
-            url=cls._make_endpoint(cls.URL).format(id=''),
+            url=cls._make_endpoint(cls.__URL).format(id=''),
             acceptable_statuses=(HTTPStatus.OK,),
             http_method=HTTPMethod.GET.lower()
         )
@@ -20,7 +20,7 @@ class ChatsRouter(BaseRouter):
     @classmethod
     def get_chat_by_id(cls, id: int) -> Request:
         return Request(
-            url=cls._make_endpoint(cls.URL).format(id=id),
+            url=cls._make_endpoint(cls.__URL).format(id=id),
             acceptable_statuses=(HTTPStatus.OK,),
             http_method=HTTPMethod.GET.lower()
         )
@@ -36,7 +36,7 @@ class ChatsRouter(BaseRouter):
     @classmethod
     def add_members_to_chat(cls, id: int) -> Request:
         return Request(
-            url=cls._make_endpoint(cls.URL).format(id=id),
+            url=cls._make_endpoint(cls.__URL).format(id=id),
             acceptable_statuses=(HTTPStatus.CREATED,),
             http_method=HTTPMethod.POST.lower()
         )
@@ -44,7 +44,7 @@ class ChatsRouter(BaseRouter):
     @classmethod
     def add_tags_to_chat(cls, id: int) -> Request:
         return Request(
-            url=cls._make_endpoint(cls.URL).format(id=id),
+            url=cls._make_endpoint(cls.__URL).format(id=id),
             acceptable_statuses=(HTTPStatus.CREATED,),
             http_method=HTTPMethod.POST.lower()
         )

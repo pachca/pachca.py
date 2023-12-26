@@ -21,15 +21,13 @@ class HttpClient:
         session = await self._session.create_session()
         try:
             response = await getattr(
-                session, request.http_method)(request.url, json=request.data)
-                # session, request.http_method)(request.url, data=request.data)
+                session, request.http_method)(request.url, json=request.data,
+                                              data=request.file_data)
             await self._session.close()
             if response.status == HTTPStatus.NO_CONTENT:
                 return ''
             resp_json = await response.json()
             if response.status not in request.acceptable_statuses:
-            # if 'json' not in response.content_type:
-            #     return None
                 message = ', '.join(
                     [error['message'] for error in resp_json['errors']]
                 )
