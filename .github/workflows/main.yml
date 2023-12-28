@@ -39,6 +39,8 @@ jobs:
           python -m flake8
 
   unittests:
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
