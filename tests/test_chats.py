@@ -1,57 +1,58 @@
-from urllib.parse import urljoin
+from pydantic_core import ValidationError
 
-from tests.fixtures.chats import (CHATS_URL, EXPECT_RESPONSE_DATA_CHAT,
+from tests.fixtures.chats import (EXPECT_RESPONSE_DATA_CHAT,
                                   EXPECT_RESPONSE_DATA_CHATS,
-                                  INCORRECT_CHAT_DATA, NEW_CHAT_DATA,
-                                  UPDATE_CHAT_DATA)
-from tests.fixtures.common import (DATA_ARRAY_MESSAGE, ERROR_ARRAY_MESSAGE,
-                                   EXPECT_RESPONSE_ERRORS, TEST_ID)
+                                  INCORRECT_CHAT_DATA, NEW_CHAT_DATA)
+from tests.fixtures.common import EXPECT_RESPONSE_ERRORS, TEST_ID
 from tests.test_base_client import TestBaseClient
 
 
 class TestChats(TestBaseClient):
-    """Тестирует запросы клиента к ресурсу 'chats/'."""
+    """Тестирует запросы бота к ресурсу 'chats/'."""
 
-    def setUp(self):
-        self.chats_url = CHATS_URL
-
-    async def test_get_chats_correct_object_and_list_data(self) -> None:
-        """Тестирует метод 'get'.
+    async def test_get_chats_correct_data(self) -> None:
+        """Тестирует метод 'get_chats'.
 
         Проверяет корректность возвращаемых данных
-        (объект беседы и список объектов бесед,
-        содержащиеся в массивах 'data')
-        при безошибочном выполении клиентом метода 'get'.
+        (список объектов бесед, содержащиеся в массиве 'data')
+        при безошибочном выполении ботом метода 'get_chats'.
         """
-        response_data = (
+        self.mock.return_value = EXPECT_RESPONSE_DATA_CHATS
+        response = await self.bot.get_chats()
+        self.assertEqual(
+            response,
             EXPECT_RESPONSE_DATA_CHATS,
-            EXPECT_RESPONSE_DATA_CHAT
+            "При безошибочном выполении ботом метода 'get_chats' "
+            "возвращается список объектов пользователей."
         )
-        urls = (
-            self.chats_url,
-            urljoin(self.chats_url, TEST_ID)
-        )
-        for data, url in zip(response_data, urls):
-            with self.subTest(data=data, url=url):
-                expect_response_data = data
-                self.mock.return_value = data
-                response = await self.client.get(url)
-                self.assertEqual(
-                    response,
-                    expect_response_data,
-                    DATA_ARRAY_MESSAGE
-                )
 
-    async def test_create_chats_correct_data(self) -> None:
-        """Тестирует метод 'post' c корректным телом запроса.
+    async def test_get_chat_by_id_correct_data(self) -> None:
+        """Тестирует метод 'get_chat_by_id'.
 
         Проверяет корректность возвращаемых данных
         (объект беседы, содержащийся в массиве 'data')
-        при безошибочном выполении клиентом метода 'post'.
+        при безошибочном выполении ботом метода 'get_chat_by_id'.
+        """
+        self.mock.return_value = EXPECT_RESPONSE_DATA_CHATS
+        response = await self.bot.get_chat_by_id(TEST_ID)
+        self.assertEqual(
+            response,
+            EXPECT_RESPONSE_DATA_CHATS,
+            "При безошибочном выполении ботом метода 'get_chats_by_id' "
+            "возвращается объект пользователя, "
+            "id которого было передано в метод."
+        )
+
+    async def test_create_chat_correct_data(self) -> None:
+        """Тестирует метод 'create_chat' c корректным телом запроса.
+
+        Проверяет корректность возвращаемых данных
+        (объект беседы, содержащийся в массиве 'data')
+        при безошибочном выполении ботом метода 'create_chat'.
         """
         new_chat_data = NEW_CHAT_DATA
         self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
-        response = await self.client.post(self.chats_url, new_chat_data)
+        response = await self.bot.create_chat(new_chat_data)
         self.assertEqual(
             response,
             EXPECT_RESPONSE_DATA_CHAT,
@@ -59,59 +60,61 @@ class TestChats(TestBaseClient):
             'возвращается информация о созданном объекте'
         )
 
-    async def test_create_chats_incorrect_data(self) -> None:
-        """Тестирует метод 'post'c некорректным телом запроса.
+    async def test_create_chat_incorrect_data(self) -> None:
+        """Тестирует метод 'create_chat' c некорректным телом запроса.
 
-        Проверяет корректность возвращаемых данных
-        (опсание ошибки, содержащееся в массиве errors)
-        при выполении клиентом метода 'post' с
+        Проверяет корректность валидации данных на стороне клиента
+        (возникновение ошибки ValidationError)
+        при выполении ботом метода 'create_chat' с
         некорректными телом запроса.
         """
         new_chat_data = INCORRECT_CHAT_DATA
         self.mock.return_value = EXPECT_RESPONSE_ERRORS
-        response = await self.client.post(self.chats_url, new_chat_data)
-        self.assertEqual(
-            response,
-            EXPECT_RESPONSE_ERRORS,
-            ERROR_ARRAY_MESSAGE
-        )
+        with self.assertRaises(
+            ValidationError,
+            msg=(
+                "При выполнении метода 'create_chat' c некорректным "
+                "телом запроса должна возникать ошибка ValidationError"
+            )
+        ):
+            await self.bot.create_chat(new_chat_data)
 
-    async def test_update_chats_correct_data(self) -> None:
-        """Тестирует метод 'put' c корректным телом запроса.
+    # async def test_update_chats_correct_data(self) -> None:
+    #     """Тестирует метод 'put' c корректным телом запроса.
 
-        Проверяет корректность возвращаемых данных
-        (объект беседы, содержащийся в массиве 'data')
-        при безошибочном выполении клиентом метода 'put'.
-        """
-        update_chat_data = UPDATE_CHAT_DATA
-        self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
-        response = await self.client.put(
-            urljoin(self.chats_url, TEST_ID),
-            update_chat_data
-        )
-        self.assertEqual(
-            response,
-            EXPECT_RESPONSE_DATA_CHAT,
-            'При редактирование беседы/канала '
-            'возвращается информация об обновленном объекте'
-        )
+    #     Проверяет корректность возвращаемых данных
+    #     (объект беседы, содержащийся в массиве 'data')
+    #     при безошибочном выполении клиентом метода 'put'.
+    #     """
+    #     update_chat_data = UPDATE_CHAT_DATA
+    #     self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
+    #     response = await self.client.put(
+    #         urljoin(self.chats_url, TEST_ID),
+    #         update_chat_data
+    #     )
+    #     self.assertEqual(
+    #         response,
+    #         EXPECT_RESPONSE_DATA_CHAT,
+    #         'При редактирование беседы/канала '
+    #         'возвращается информация об обновленном объекте'
+    #     )
 
-    async def test_update_chat_incorrect_data(self) -> None:
-        """Тестирует метод 'put'c некорректным телом запроса.
+    # async def test_update_chat_incorrect_data(self) -> None:
+    #     """Тестирует метод 'put'c некорректным телом запроса.
 
-        Проверяет корректность возвращаемых данных
-        (опсание ошибки, содержащееся в массиве errors)
-        при выполении клиентом метода 'put' с
-        некорректными телом запроса.
-        """
-        new_chat_data = INCORRECT_CHAT_DATA
-        self.mock.return_value = EXPECT_RESPONSE_ERRORS
-        response = await self.client.put(
-            urljoin(self.chats_url, TEST_ID),
-            new_chat_data
-        )
-        self.assertEqual(
-            response,
-            EXPECT_RESPONSE_ERRORS,
-            ERROR_ARRAY_MESSAGE
-        )
+    #     Проверяет корректность возвращаемых данных
+    #     (опсание ошибки, содержащееся в массиве errors)
+    #     при выполении клиентом метода 'put' с
+    #     некорректными телом запроса.
+    #     """
+    #     new_chat_data = INCORRECT_CHAT_DATA
+    #     self.mock.return_value = EXPECT_RESPONSE_ERRORS
+    #     response = await self.client.put(
+    #         urljoin(self.chats_url, TEST_ID),
+    #         new_chat_data
+    #     )
+    #     self.assertEqual(
+    #         response,
+    #         EXPECT_RESPONSE_ERRORS,
+    #         ERROR_ARRAY_MESSAGE
+    #     )

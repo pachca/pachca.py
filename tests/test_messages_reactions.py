@@ -1,8 +1,8 @@
-from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.messages_reactions import (LIST_REACTIONS, REACTION,
                                                REACTION_INCORRECT,
                                                URL_MESSAGE_REACTIONS)
+from tests.test_base_client import TestBaseClient
 
 
 class TestMessagesReactions(TestBaseClient):

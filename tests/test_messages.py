@@ -1,10 +1,10 @@
-from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.messages import (EDIT_MESSAGE, INFO_MESSAGES,
                                      LIST_MESSAGES, NEW_MESSAGE,
                                      NEW_MESSAGE_INCORRECT,
                                      RESPONSE_NEW_MESSAGE_DATA,
                                      URL_MESSAGE_INFO, URL_MESSAGES)
+from tests.test_base_client import TestBaseClient
 
 
 class TestMessages(TestBaseClient):

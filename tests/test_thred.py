@@ -1,8 +1,8 @@
-from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.thread import (RESPONSE_CREATED_EARLIER_THREAD,
                                    RESPONSE_NEW_THREAD, URL_EARLIER_THREAD,
                                    URL_NEW_THREAD)
+from tests.test_base_client import TestBaseClient
 
 
 class TestThred(TestBaseClient):

@@ -66,4 +66,3 @@ INCORRECT_CHAT_DATA = {
         "name": 100000
     }
 }
-CHATS_URL = 'chats/'

@@ -2,17 +2,16 @@ import os
 import unittest
 from unittest.mock import patch
 
-from client.session.client import HttpClient
-from tests.fixtures.common import PATCH_OBJECT
+from pachca.bot import Bot
 
 
 class TestBaseClient(unittest.IsolatedAsyncioTestCase):
     """Базовый класс тестирования."""
 
     async def asyncSetUp(self):
-        self.client = HttpClient(os.getenv("API_TOKEN"))
-        self.mock_get_patcher = patch(PATCH_OBJECT)
-        self.mock = self.mock_get_patcher.start()
+        self.bot = Bot(token=os.getenv("API_TOKEN"))
+        self.mock_make_request = patch.object(self.bot.client, 'make_request')
+        self.mock = self.mock_make_request.start()
 
     async def asyncTearDown(self):
-        self.mock_get_patcher.stop()
+        self.mock_make_request.stop()

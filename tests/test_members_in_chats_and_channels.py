@@ -1,4 +1,3 @@
-from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.members_chats_channels import (PREPARE_CORRECT_MEMBERS,
                                                    PREPARE_CORRECT_TAGS,
@@ -8,6 +7,7 @@ from tests.fixtures.members_chats_channels import (PREPARE_CORRECT_MEMBERS,
                                                    URL_ADD_TAGS,
                                                    URL_DEL_MEMBERS,
                                                    URL_DEL_TAG)
+from tests.test_base_client import TestBaseClient
 
 
 class TestMembersInChatsAndChannelsTest(TestBaseClient):

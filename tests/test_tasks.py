@@ -1,7 +1,7 @@
-from tests.test_base_client import TestBaseClient
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.tasks import (RESPONSE_CREATED_TASK, TASK, TASK_INCORRECT,
                                   URL_TASKS)
+from tests.test_base_client import TestBaseClient
 
 
 class TestTasks(TestBaseClient):
