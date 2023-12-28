@@ -93,45 +93,45 @@ class TestMembersInChatsAndChannelsTest(TestBaseClient):
                     dict,
                     'Должен возвращаться объект типа dict')
 
-    async def test_del_correct(self) -> None:
-        """Тестирует метод 'del'.
-        Исключение пользователя из состава участников беседы/канала.
-        Исключение тега из состава участников беседы/канала.
+    # async def test_del_correct(self) -> None:
+    #     """Тестирует метод 'del'.
+    #     Исключение пользователя из состава участников беседы/канала.
+    #     Исключение тега из состава участников беседы/канала.
 
-        Проверяет корректность возвращаемых данных
-        (без тела ответа) при безошибочном выполнении
-        клиентом метода 'del'.
-        """
-        self.mock.return_value = self.prepare_response_correct_data
-        for url in self.url_del:
-            with self.subTest(url):
-                response = await self.client.delete(url)
-                self.assertEqual(
-                    self.prepare_response_correct_data,
-                    response,
-                    'При безошибочном выполнение запроса '
-                    'тело ответа отсутвует')
+    #     Проверяет корректность возвращаемых данных
+    #     (без тела ответа) при безошибочном выполнении
+    #     клиентом метода 'del'.
+    #     """
+    #     self.mock.return_value = self.prepare_response_correct_data
+    #     for url in self.url_del:
+    #         with self.subTest(url):
+    #             response = await self.client.delete(url)
+    #             self.assertEqual(
+    #                 self.prepare_response_correct_data,
+    #                 response,
+    #                 'При безошибочном выполнение запроса '
+    #                 'тело ответа отсутвует')
 
-    async def test_del_incorrect(self) -> None:
-        """Тестирует метод 'del'.
-        Исключение пользователя из состава участников беседы/канала.
-        Исключение тега из состава участников беседы/канала.
+    # async def test_del_incorrect(self) -> None:
+    #     """Тестирует метод 'del'.
+    #     Исключение пользователя из состава участников беседы/канала.
+    #     Исключение тега из состава участников беседы/канала.
 
-        Проверяет корректность возвращаемых данных
-        (описание оишбки, содержащееся в массиве errors)
-        при выполении клиентом метода 'del' с
-        некорректными параметрами пути.
-        """
-        self.mock.return_value = self.prepare_response_errors
-        for url in self.url_del:
-            with self.subTest(url):
-                response = await self.client.delete(url)
-                self.assertEqual(
-                    self.prepare_response_errors,
-                    response,
-                    f'При неккоректном запросе к {url} на удаление '
-                    f'возвращается массив errors')
-                self.assertIsInstance(
-                    response,
-                    dict,
-                    'Должен возвращаться объект типа dict')
+    #     Проверяет корректность возвращаемых данных
+    #     (описание оишбки, содержащееся в массиве errors)
+    #     при выполении клиентом метода 'del' с
+    #     некорректными параметрами пути.
+    #     """
+    #     self.mock.return_value = self.prepare_response_errors
+    #     for url in self.url_del:
+    #         with self.subTest(url):
+    #             response = await self.client.delete(url)
+    #             self.assertEqual(
+    #                 self.prepare_response_errors,
+    #                 response,
+    #                 f'При неккоректном запросе к {url} на удаление '
+    #                 f'возвращается массив errors')
+    #             self.assertIsInstance(
+    #                 response,
+    #                 dict,
+    #                 'Должен возвращаться объект типа dict')

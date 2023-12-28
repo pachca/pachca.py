@@ -3,7 +3,7 @@ from pydantic_core import ValidationError
 from tests.fixtures.chats import (EXPECT_RESPONSE_DATA_CHAT,
                                   EXPECT_RESPONSE_DATA_CHATS,
                                   INCORRECT_CHAT_DATA, NEW_CHAT_DATA)
-from tests.fixtures.common import EXPECT_RESPONSE_ERRORS, TEST_ID
+from tests.fixtures.common import TEST_ID
 from tests.test_base_client import TestBaseClient
 
 
@@ -69,7 +69,6 @@ class TestChats(TestBaseClient):
         некорректными телом запроса.
         """
         new_chat_data = INCORRECT_CHAT_DATA
-        self.mock.return_value = EXPECT_RESPONSE_ERRORS
         with self.assertRaises(
             ValidationError,
             msg=(
