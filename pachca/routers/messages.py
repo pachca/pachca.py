@@ -72,7 +72,7 @@ class MessagesRouter(BaseRouter):
         )
 
     @classmethod
-    def create_threade(cls, id: int) -> Request:
+    def create_thread(cls, id: int) -> Request:
         return Request(
             url=cls._make_endpoint(cls.__URL_THREAD).format(id=id),
             acceptable_statuses=(HTTPStatus.CREATED,),

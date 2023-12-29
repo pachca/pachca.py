@@ -1,7 +1,8 @@
+from pydantic_core import ValidationError
+from tests.fixtures.common import TEST_ID, TEST_ID_INCORRECT, EMPTY_ARRAY
 from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
 from tests.fixtures.messages_reactions import (LIST_REACTIONS, REACTION,
-                                               REACTION_INCORRECT,
-                                               URL_MESSAGE_REACTIONS)
+                                               REACTION_INCORRECT)
 from tests.test_base_client import TestBaseClient
 
 
@@ -9,104 +10,101 @@ class TestMessagesReactions(TestBaseClient):
     """Тестирует запросы клиента к ресурсу '/messages/{id}/reactions'."""
 
     def setUp(self) -> None:
-        self.url_messages_reactions = URL_MESSAGE_REACTIONS
+        self.url_messages_reactions = TEST_ID
+        self.url_messages_reactions_incorrect = TEST_ID_INCORRECT
         self.prepare_response_errors = PREPARE_RESPONSE_ERRORS
         self.prepare_reaction = REACTION
         self.prepare_reaction_incorrect = REACTION_INCORRECT
         self.prepare_response_list_reactions = LIST_REACTIONS
         self.prepare_response_correct_data = {}
 
-    async def test_created_reaction(self) -> None:
-        """Тестирует метод 'post'.
+    async def test_add_reaction(self) -> None:
+        """Тестирует метод 'add_reaction'.
         Добавление реакции на сообщение.
 
         Проверяет корректность возвращаемых данных
         (объект задачи, содержащийся в массиве data)
-        при безошибочном выполнении клиентом метода 'post'.
+        при безошибочном выполнении ботом метода 'add_reaction'.
         """
-        self.mock.return_value = self.prepare_response_correct_data
-        response = await self.client.post(
-            self.url_messages_reactions,
-            self.prepare_reaction)
+        self.mock.return_value = EMPTY_ARRAY
+        response = await self.bot.add_reaction(TEST_ID, self.prepare_reaction)
         self.assertEqual(
-            self.prepare_response_correct_data,
+            EMPTY_ARRAY,
             response,
             'При безошибочном выполнение запроса тело ответа отсутвует')
 
-    async def test_created_reaction_incorrect(self) -> None:
-        """Тестирует метод 'post'.
+    async def test_add_reaction_incorrect(self) -> None:
+        """Тестирует метод 'add_reaction'.
         Добавление реакции на сообщение.
 
         Проверяет корректность возвращаемых данных
-        (описание ошибки, содержащееся в массиве errors)
-        при выполнении клиентом метода 'post' с некорректными
+        (возникновение ошибки ValidationError)
+        при выполнении ботом метода 'add_reaction' с некорректными
         данными.
         """
-        self.mock.return_value = self.prepare_response_errors
-        response = await self.client.post(
-            self.url_messages_reactions,
-            self.prepare_reaction_incorrect)
-        self.assertEqual(
-            self.prepare_response_errors,
-            response,
-            f'При некорректном теле POST-запроса '
-            f'к эндпоинту {self.url_messages_reactions} '
-            'должен вернуться массив errors')
-        self.assertIsInstance(
-            response,
-            dict,
-            'Должен возвращаться объект типа dict')
+        with self.assertRaises(
+            ValidationError,
+            msg=(
+                "При выполнении метода 'add_reaction' c некорректным "
+                "телом запроса должна возникать ошибка ValidationError"
+            )
+        ):
+            await self.bot.add_reaction(
+                TEST_ID,
+                REACTION_INCORRECT
+            )
 
-    async def test_del_reaction(self) -> None:
-        """Тестирует метод 'del'.
+    async def test_delete_reaction(self) -> None:
+        """Тестирует метод 'delete_reaction'.
         Удаление реакции на сообщение.
 
         Проверяет корректность возвращаемых данных
         (без тела ответа) при безошибочном выполнении
-        клиентом метода 'del'.
+        ботом метода 'delete_reaction'.
         """
-        self.mock.return_value = self.prepare_response_correct_data
-        response = await self.client.delete(self.url_messages_reactions)
+        self.mock.return_value = EMPTY_ARRAY
+        response = await self.bot.delete_reaction(
+            TEST_ID,
+            REACTION
+        )
         self.assertEqual(
-            self.prepare_response_correct_data,
+            EMPTY_ARRAY,
             response,
             'При безошибочном выполнение запроса тело ответа отсутвует')
 
-    async def test_del_incorrect(self) -> None:
-        """Тестирует метод 'del'.
+    async def test_delete_reaction_incorrect(self) -> None:
+        """Тестирует метод 'delete_reaction'.
         Удаление реакции на сообщение.
 
         Проверяет корректность возвращаемых данных
-        (описание ошибки, содержащееся в массиве errors)
-        при выполнении клиентом метода 'del' с некорректными
+        (возникновение ошибки ValidationError)
+        при выполнении клиентом метода 'delete_reaction' с некорректными
         данными.
         """
-        self.mock.return_value = self.prepare_response_errors
-        response = await self.client.delete(
-            self.url_messages_reactions,
-            data=self.prepare_reaction)
-        self.assertEqual(
-            self.prepare_response_errors,
-            response,
-            f'При неккоректном запросе на удаление '
-            f'возвращается массив errors')
-        self.assertIsInstance(
-            response,
-            dict,
-            'Должен возвращаться объект типа dict')
+        with self.assertRaises(
+            ValidationError,
+            msg=(
+                "При выполнении метода 'delete_reaction' c некорректным "
+                "телом запроса должна возникать ошибка ValidationError"
+            )
+        ):
+            await self.bot.delete_reaction(
+                TEST_ID,
+                REACTION_INCORRECT
+            )
 
-    async def test_get_list_reactions(self) -> None:
-        """Тестирует метод 'get'.
+    async def test_get_reactions(self) -> None:
+        """Тестирует метод 'get_reactions'.
         Получение актуального списка реакций.
 
         Проверяет корректность возвращаемых данных
         (список объектов/реакций, содержащийся в массиве data)
-        при безошибочном выполнении клиентом метода 'get'.
+        при безошибочном выполнении ботом метода 'get_reactions'.
         """
-        self.mock.return_value = self.prepare_response_list_reactions
-        response = await self.client.get(self.url_messages_reactions)
+        self.mock.return_value = LIST_REACTIONS
+        response = await self.bot.get_reactions(TEST_ID)
         self.assertEqual(
-            self.prepare_response_list_reactions,
+            LIST_REACTIONS,
             response,
             'При корректном запросе возвращается список реакций')
         self.assertIsInstance(
@@ -117,23 +115,3 @@ class TestMessagesReactions(TestBaseClient):
             response['data'],
             list,
             'Ключ "data" содержит список')
-
-    async def test_get_list_reactions_incorrect(self) -> None:
-        """Тестирует метод 'get'.
-        Получение актуального списка реакций.
-
-        Проверяет корректность возвращаемых данных
-        (описание ошибки, содержащееся в массиве errors)
-        при выполении клиентом метода 'get' с некорректными параметрами пути.
-        """
-        self.mock.return_value = self.prepare_response_errors
-        response = await self.client.get(self.url_messages_reactions)
-        self.assertEqual(
-            self.prepare_response_errors,
-            response,
-            f'При неккоректном запросе на удаление '
-            f'возвращается массив errors')
-        self.assertIsInstance(
-            response,
-            dict,
-            'Должен возвращаться объект типа dict')

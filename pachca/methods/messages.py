@@ -53,6 +53,6 @@ class MessagesMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def create_threade(cls, id: int, client: HttpClient):
-        request = Router.create_threade(id)
+    async def create_thread(cls, id: int, client: HttpClient):
+        request = Router.create_thread(id)
         return await client.make_request(request)

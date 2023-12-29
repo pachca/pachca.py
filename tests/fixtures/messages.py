@@ -105,7 +105,3 @@ EDIT_MESSAGE = {
         'files': []
     }
 }
-
-URL_MESSAGES = '/messages'
-
-URL_MESSAGE_INFO = '/messages/194275'

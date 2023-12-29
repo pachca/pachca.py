@@ -1,1 +1,3 @@
 TEST_ID = 12
+TEST_ID_INCORRECT = 'incorrect_id'
+EMPTY_ARRAY = {}
