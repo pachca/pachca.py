@@ -1,6 +1,5 @@
 from pydantic_core import ValidationError
-from tests.fixtures.common import TEST_ID, TEST_ID_INCORRECT, EMPTY_ARRAY
-from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
+from tests.fixtures.common import TEST_ID, EMPTY_ARRAY
 from tests.fixtures.messages_reactions import (LIST_REACTIONS, REACTION,
                                                REACTION_INCORRECT)
 from tests.test_base_client import TestBaseClient
@@ -8,15 +7,6 @@ from tests.test_base_client import TestBaseClient
 
 class TestMessagesReactions(TestBaseClient):
     """Тестирует запросы клиента к ресурсу '/messages/{id}/reactions'."""
-
-    def setUp(self) -> None:
-        self.url_messages_reactions = TEST_ID
-        self.url_messages_reactions_incorrect = TEST_ID_INCORRECT
-        self.prepare_response_errors = PREPARE_RESPONSE_ERRORS
-        self.prepare_reaction = REACTION
-        self.prepare_reaction_incorrect = REACTION_INCORRECT
-        self.prepare_response_list_reactions = LIST_REACTIONS
-        self.prepare_response_correct_data = {}
 
     async def test_add_reaction(self) -> None:
         """Тестирует метод 'add_reaction'.
@@ -27,7 +17,7 @@ class TestMessagesReactions(TestBaseClient):
         при безошибочном выполнении ботом метода 'add_reaction'.
         """
         self.mock.return_value = EMPTY_ARRAY
-        response = await self.bot.add_reaction(TEST_ID, self.prepare_reaction)
+        response = await self.bot.add_reaction(TEST_ID, REACTION)
         self.assertEqual(
             EMPTY_ARRAY,
             response,
