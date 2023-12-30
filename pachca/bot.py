@@ -207,7 +207,8 @@ class Bot:
 
     async def add_reaction(self, message_id, data):
         """
-        lol
+        Метод для добавления реакции на сообщение.
+        Для добавления реакции вам необходимо знать id сообщения.
         """
         return await BotMethods.add_reaction(self.client,
                                              id=message_id, data=data)
