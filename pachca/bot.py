@@ -219,10 +219,37 @@ class Bot:
         """
         return await BotMethods.create_task(self.client, task)
 
-    async def create_threade(self, message_id: int):
+    async def get_reactions(self, message_id: int):
+        """
+        Метод для получения актуального списка реакций на сообщение.
+
+        Необходимые параметры:
+
+        message_id: int
+
+        """
+        return await BotMethods.get_reactions(message_id, self.client)
+
+    async def delete_reaction(self, message_id: int, reaction: dict):
+        """
+        Метод для удаления реакции на сообщение.
+
+        Необходимые параметры:
+
+        {code: str - Emoji символ реакции}
+
+        """
+        return await BotMethods.delete_reaction(
+            message_id, self.client, reaction
+        )
+
+    async def create_thread(self, message_id: int):
         """
         Метод для создания нового треда к сообщению.
-        Если у сообщения уже было создан тред, то в ответе на запрос вернётся
-        информация об уже созданном раннее треде.
+
+        Необходимые параметры:
+
+        message_id: int
+
         """
-        return await BotMethods.create_thread(self.client, message_id)
+        return await BotMethods.create_thread(message_id, self.client)

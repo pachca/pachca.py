@@ -1,40 +1,40 @@
-from urllib.parse import urljoin
-
-from tests.fixtures.common import DATA_ARRAY_MESSAGE, TEST_ID
-from tests.fixtures.group_tags import EXPECT_RESPONSE_DATA_GROUP_TAGS, TAGS_URL
+from tests.fixtures.common import TEST_ID
+from tests.fixtures.group_tags import EXPECT_RESPONSE_DATA_GROUP_TAGS
 from tests.fixtures.users import EXPECT_RESPONSE_DATA_USERS
 from tests.test_base_client import TestBaseClient
 
 
 class TestGroupTags(TestBaseClient):
-    """Тестирует запросы клиента к ресурсу 'group_tags/'."""
+    """Тестирует запросы бота к ресурсу 'group_tags/'."""
 
-    def setUp(self):
-        self.tags_url = TAGS_URL
-
-    async def test_get_chats_correct_object_and_list_data(self) -> None:
-        """Тестирует метод 'get'.
+    async def test_get_group_tags_correct_data(self) -> None:
+        """Тестирует метод 'get_chats'.
 
         Проверяет корректность возвращаемых данных
-        (список объектов беседы в первом подтесте и список объектов
-        пользоваетелй тега - во втором, содержащиеся в массивах 'data')
-        при безошибочном выполнении клиентом метода 'get'.
+        (список объектов тегов, содержащиеся в массиве 'data')
+        при безошибочном выполении ботом метода 'get_group_tags'.
         """
-        response_data = (
+        self.mock.return_value = EXPECT_RESPONSE_DATA_GROUP_TAGS
+        response = await self.bot.get_group_tags()
+        self.assertEqual(
+            response,
             EXPECT_RESPONSE_DATA_GROUP_TAGS,
-            EXPECT_RESPONSE_DATA_USERS
+            "При безошибочном выполении ботом метода 'get_group_tags' "
+            "возвращается список объектов тегов."
         )
-        urls = (
-            self.tags_url,
-            urljoin(urljoin(self.tags_url, TEST_ID), 'users/')
+
+    async def test_get_tag_users_correct_data(self) -> None:
+        """Тестирует метод 'get_tag_users'.
+
+        Проверяет корректность возвращаемых данных
+        (список объектов пользователей тега, содержащийся в массиве 'data')
+        при безошибочном выполении ботом метода 'get_tag_users'.
+        """
+        self.mock.return_value = EXPECT_RESPONSE_DATA_USERS
+        response = await self.bot.get_tag_users(TEST_ID)
+        self.assertEqual(
+            response,
+            EXPECT_RESPONSE_DATA_USERS,
+            "При безошибочном выполении ботом метода 'get_tag_users' "
+            "возвращается список объектов пользователей тега. "
         )
-        for data, url in zip(response_data, urls):
-            with self.subTest(data=data, url=url):
-                expect_response_data = data
-                self.mock.return_value = data
-                response = await self.client.get(url)
-                self.assertEqual(
-                    response,
-                    expect_response_data,
-                    DATA_ARRAY_MESSAGE
-                )

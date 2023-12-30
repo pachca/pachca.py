@@ -1,5 +1,3 @@
-URL_TASKS = '/tasks'
-
 TASK = {
     'task': {
         'kind': 'reminder',

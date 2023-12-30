@@ -112,4 +112,3 @@ INCORRECT_USER_DATA = {
         "first_name": ["Олег", "Семён"]
     }
 }
-USERS_URL = 'users/'

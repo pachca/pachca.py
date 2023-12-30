@@ -7,10 +7,11 @@ name = "pypi"
 aiohttp = "*"
 asynctest = "*"
 pytest = "*"
+pydantic = "*"
 
 [dev-packages]
 isort = "*"
 requests = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.11.7"

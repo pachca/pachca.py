@@ -1,33 +1,23 @@
+from pydantic_core import ValidationError
+from tests.fixtures.tasks import RESPONSE_CREATED_TASK, TASK, TASK_INCORRECT
 from tests.test_base_client import TestBaseClient
-from tests.fixtures.errors import PREPARE_RESPONSE_ERRORS
-from tests.fixtures.tasks import (RESPONSE_CREATED_TASK, TASK, TASK_INCORRECT,
-                                  URL_TASKS)
 
 
 class TestTasks(TestBaseClient):
-    """Тестирует запросы клиента к ресурсу '/tasks'."""
+    """Тестирует запросы бота к ресурсу '/tasks'."""
 
-    def setUp(self) -> None:
-        self.url_tasks = URL_TASKS
-        self.prepare_response_errors = PREPARE_RESPONSE_ERRORS
-        self.prepare_task = TASK
-        self.prepare_task_incorrect = TASK_INCORRECT
-        self.prepare_response_created_task = RESPONSE_CREATED_TASK
-        self.prepare_response_correct_data = {}
-
-    async def test_created_new_task(self) -> None:
-        """Тестирует метод 'post'.
+    async def test_create_task(self) -> None:
+        """Тестирует метод 'create_task'.
         Создание новой задачи.
 
         Проверяет корректность возвращаемых данных
         (объект задачи, содержащийся в массиве data)
-        при безошибочном выполнении клиентом метода 'post'.
+        при безошибочном выполнении ботом метода 'create_task'.
         """
-        self.mock.return_value = self.prepare_response_created_task
-        response = await self.client.post(
-            self.url_tasks, self.prepare_task)
+        self.mock.return_value = RESPONSE_CREATED_TASK
+        response = await self.bot.create_task(TASK)
         self.assertEqual(
-            self.prepare_response_created_task,
+            RESPONSE_CREATED_TASK,
             response,
             'При создании задачи возвращается информация о новой задаче')
         self.assertIsInstance(
@@ -35,23 +25,20 @@ class TestTasks(TestBaseClient):
             dict,
             'Должен возвращаться объект типа dict')
 
-    async def test_created_new_task_incorrect(self) -> None:
-        """Тестирует метод 'post'.
+    async def test_created_task_incorrect(self) -> None:
+        """Тестирует метод 'create_task'.
         Создание новой задачи.
 
         Проверяет корректность возвращаемых данных
-        (описание ошибки, содержащееся в массиве errors)
-        при выполнении клиентом метода 'post' с некорректными
-        данными.
+        (возникновение ошибки ValidationError)
+        при выполении ботом метода 'create_task' с
+        некорректными телом запроса.
         """
-        self.mock.return_value = self.prepare_response_errors
-        response = await self.client.post(
-            self.url_tasks, self.prepare_task_incorrect)
-        self.assertEqual(
-            self.prepare_response_errors,
-            response,
-            'При неккоректном запросе возвращается массив errors')
-        self.assertIsInstance(
-            response,
-            dict,
-            'Должен возвращаться объект типа dict')
+        with self.assertRaises(
+            ValidationError,
+            msg=(
+                "При выполнении метода 'create_task' c некорректным "
+                "телом запроса должна возникать ошибка ValidationError"
+            )
+        ):
+            await self.bot.create_task(TASK_INCORRECT)

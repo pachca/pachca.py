@@ -1,11 +1,9 @@
-URL_MESSAGE_REACTIONS = '/messages/723194/reactions'
-
 REACTION = {
     'code': '👍'
 }
 
 REACTION_INCORRECT = {
-    'code': ''
+    'code': 123
 }
 
 LIST_REACTIONS = {

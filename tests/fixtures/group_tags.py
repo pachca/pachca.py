@@ -27,4 +27,3 @@ EXPECT_RESPONSE_DATA_GROUP_TAGS = {
         }
     ]
 }
-TAGS_URL = 'group_tags/'
