@@ -41,6 +41,8 @@ class RequestData(BaseModel):
     code: Optional[str] = None
     task: Optional[TaskData] = None
     chat: Optional[ChatData] = None
+    member_ids: Optional[list[int]] = None
+    group_tag_ids: Optional[list[int]] = None
 
     def to_dict(self):
         return self.model_dump(exclude_none=True)
