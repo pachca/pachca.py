@@ -207,7 +207,8 @@ class Bot:
 
     async def add_reaction(self, message_id, data):
         """
-        lol
+        Метод для добавления реакции на сообщение.
+        Для добавления реакции вам необходимо знать id сообщения.
         """
         return await BotMethods.add_reaction(self.client,
                                              id=message_id, data=data)
@@ -217,3 +218,11 @@ class Bot:
         Метод для создания новой задачи.
         """
         return await BotMethods.create_task(self.client, task)
+
+    async def create_threade(self, message_id: int):
+        """
+        Метод для создания нового треда к сообщению.
+        Если у сообщения уже было создан тред, то в ответе на запрос вернётся
+        информация об уже созданном раннее треде.
+        """
+        return await BotMethods.create_thread(self.client, message_id)
