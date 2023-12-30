@@ -182,7 +182,11 @@ class Bot:
         """
         return await BotMethods.create_chat(self.client, chat)
 
-    async def add_members_to_chat(self, member_ids: dict = None):
+    async def add_members_to_chat(
+            self,
+            id: int = None,
+            member_ids: dict = None
+    ):
         """
         Метод для добавления пользователей в состав участников
         беседы или канала.
@@ -192,9 +196,17 @@ class Bot:
                                     которые станут участниками
 
         """
-        return await BotMethods.add_members_to_chat(self.client, member_ids)
+        return await BotMethods.add_members_to_chat(
+            self.client,
+            id,
+            member_ids
+        )
 
-    async def add_tags_to_chat(self, group_tag_ids: dict = None):
+    async def add_tags_to_chat(
+            self,
+            id: int = None,
+            group_tag_ids: dict = None
+    ):
         """
         Метод для добавления тегов в состав участников беседы или канала.
         Необходимые параметры:
@@ -203,7 +215,11 @@ class Bot:
                                     которые станут участниками
 
         """
-        return await BotMethods.add_tags_to_chat(self.client, group_tag_ids)
+        return await BotMethods.add_tags_to_chat(
+            self.client,
+            id,
+            group_tag_ids
+        )
 
     async def add_reaction(self, message_id, data):
         """
