@@ -259,6 +259,6 @@ if __name__ == '__main__':
 ### Комментарии
   * **Новый тред**
     ``` python
-    class Bot.create_threade(client: HttpClient, id: int)
+    class Bot.create_thread(client: HttpClient, message_id: int)
     ```
     Метод для создания нового треда к сообщению.
