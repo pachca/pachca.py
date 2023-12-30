@@ -44,11 +44,13 @@ if __name__ == '__main__':
     class Bot.get_chats(client: HttpClient)
     ```
     Метод для получение списка бесед и каналов по заданным параметрам.
+
   * **Информация о беседе или канале**
     ``` python
     class Bot.get_chat_by_id(client: HttpClient, id: int)
     ```
     Метод для получение информации о беседе или канале. Для получения беседы или канала вам необходимо знать её id и указать его в URL запроса.
+
   * **Новая беседа или канал**
     ``` python
     class Bot.create_chat(client: HttpClient, chat: dict)
@@ -67,6 +69,7 @@ if __name__ == '__main__':
         }
         ```
     Метод для создания новой беседы или нового канала. При создании беседы или канала вы автоматически становитесь участником.
+
   * **Добавление пользователей**
     ``` python
     class Bot.add_members_to_chat(client: HttpClient, id: int, members_ids: dict)
@@ -79,6 +82,7 @@ if __name__ == '__main__':
         }
         ```
     Метод для добавления пользователей в состав участников беседы или канала.
+
   * **Добавление тегов**
     ``` python
     class Bot.add_tags_to_chat(client: HttpClient, id: int, group_tag_ids: dict)
@@ -98,6 +102,7 @@ if __name__ == '__main__':
     class Bot.get_users(client: HttpClient)
     ```
     Метод для получения актуального списка сотрудников вашей компании.
+
   * **Информация о сотруднике**
     ``` python
     class Bot.get_user(client: HttpClient, id: int)
@@ -110,6 +115,7 @@ if __name__ == '__main__':
     class Bot.get_group_tags(client: HttpClient)
     ```
     Метод для получения актуального списка тегов сотрудников. Названия тегов являются уникальными в компании
+
   * **Список сотрудников тега**
     ``` python
     class Bot.get_tag_users(client: HttpClient, tag_id: int)
@@ -163,11 +169,13 @@ if __name__ == '__main__':
       * **File**: [источник](ссылка на код)
 
     Метод для отправки сообщения в беседу или канал, личного сообщения пользователю или комментария в тред.
+
   * **Информация о сообщении**
     ``` python
     class Bot.get_message_by_id(client: HttpClient, id: int)
     ```
     Метод для отправки сообщения в беседу или канал, личного сообщения пользователю или комментария в тред.
+
   * **Список сообщений чата**
     ``` python
     class Bot.get_messages(client: HttpClient, chat_id: int, per: int, page: int)
@@ -177,6 +185,7 @@ if __name__ == '__main__':
       * **per:** Количество возвращаемых сущностей за один запрос (по умолчанию 25, максимум 50)
       * **page:** Страница выборки (по умолчанию 1)
     Метод для отправки сообщения в беседу или канал, личного сообщения пользователю или комментария в тред.
+
   * **Редактирование сообщения**
     ``` python
     class Bot.edit_message(client: HttpClient, id: int, message: dict)
@@ -210,11 +219,13 @@ if __name__ == '__main__':
       * **File**: [источник](ссылка на код)
 
     Метод для добавления реакции на сообщение. Для добавления реакции вам необходимо знать id сообщения.
+
   * **Удаление реакции**
     ``` python
     class Bot.delete_reaction(client: HttpClient, id: int)
     ```
     Метод для удаления реакции на сообщение. Для удаления реакции вам необходимо знать id сообщения.
+
   * **Список реакций**
     ``` python
     class Bot.get_reactions(client: HttpClient, id: int)
