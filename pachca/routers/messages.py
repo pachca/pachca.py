@@ -72,6 +72,16 @@ class MessagesRouter(BaseRouter):
         )
 
     @classmethod
+    def get_reactions(cls, per, page) -> Request:
+        return Request(
+            url=cls._make_endpoint(cls.__URL_CHAT_MESSAGES).format(
+                page=page, per=per
+            ),
+            acceptable_statuses=(HTTPStatus.OK,),
+            http_method=HTTPMethod.GET.lower()
+        )
+
+    @classmethod
     def create_thread(cls, id: int) -> Request:
         return Request(
             url=cls._make_endpoint(cls.__URL_THREAD).format(id=id),

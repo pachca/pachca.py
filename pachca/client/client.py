@@ -1,6 +1,6 @@
 from aiohttp import ClientConnectionError
 
-from .errors import ApiClientException, WrongStatusError
+from .errors import ApiClientException
 from .session import Session
 from .types import Request
 
@@ -20,20 +20,16 @@ class HttpClient:
         session = await self._session.create_session()
         try:
             response = await getattr(
-                session, request.http_method)(request.url, json=request.data,
-                                              data=request.file_data)
+                session, request.http_method)(
+                    request.url,
+                    json=request.data,
+                    data=request.file_data
+            )
             await self._session.close()
-            if not response.content_length:
+            content = await response.content.read()
+            if not content:
                 return ''
-            resp_json = await response.json()
-            if response.status not in request.acceptable_statuses:
-                message = ', '.join(
-                    [error['message'] for error in resp_json['errors']]
-                )
-                raise WrongStatusError({
-                    'status': response.status,
-                    'message': message
-                })
-            return resp_json
+
+            return content.decode('utf-8')
         except (ConnectionError, TimeoutError, ClientConnectionError) as error:
             raise ApiClientException('Ошибка подключения', error)
