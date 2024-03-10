@@ -1,4 +1,4 @@
-from client import HttpClient, Request, RequestData
+from client import HttpClient, Request
 from routers import Router
 
 
@@ -15,9 +15,24 @@ class ChatsMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def create_chat(cls, client: HttpClient, data: dict):
+    async def create_chat(
+        cls, client: HttpClient,
+            name: str,
+            member_ids: list[int] = None,
+            group_tag_ids: list[int] = None,
+            channel: bool = False,
+            public: bool = False
+    ):
         request: Request = Router.create_chat()
-        request.data = RequestData(**data).to_dict()
+        request.data = {
+            'chat': {
+                'name': name,
+                'member_ids': member_ids,
+                'group_tag_ids': group_tag_ids,
+                'channel': channel,
+                'public': public
+            }
+        }
         return await client.make_request(request)
 
     @classmethod
@@ -25,14 +40,24 @@ class ChatsMethods:
         cls,
         client: HttpClient,
         id: int,
-        data: dict
+        member_ids: list[int],
+        silent: bool
     ):
         request: Request = Router.add_members_to_chat(id)
-        request.data = RequestData(**data).to_dict()
+        request.data = {
+            'member_ids': member_ids,
+            'silent': silent
+        }
         return await client.make_request(request)
 
     @classmethod
-    async def add_tags_to_chat(cls, client: HttpClient, id: int, data: dict):
+    async def add_tags_to_chat(
+        cls,
+        client: HttpClient,
+        id: int, group_tag_ids: list[int]
+    ):
         request: Request = Router.add_tags_to_chat(id)
-        request.data = RequestData(**data).to_dict()
+        request.data = {
+            'group_tag_ids': group_tag_ids
+        }
         return await client.make_request(request)

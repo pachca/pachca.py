@@ -1,10 +1,9 @@
 from http import HTTPMethod, HTTPStatus
 
-from client import Request
-from .base import BaseRouter
+from client import Request, HttpClient
 
 
-class TasksRouter(BaseRouter):
+class TasksRouter(HttpClient):
 
     __URL: str = 'tasks/'
 

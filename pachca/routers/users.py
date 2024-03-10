@@ -1,11 +1,9 @@
 from http import HTTPMethod, HTTPStatus
 
-from client import Request
-
-from .base import BaseRouter
+from client import Request, HttpClient
 
 
-class UserRouter(BaseRouter):
+class UserRouter(HttpClient):
 
     __URL: str = 'users/{id}'
 
