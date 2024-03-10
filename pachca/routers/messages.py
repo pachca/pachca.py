@@ -1,10 +1,9 @@
 from http import HTTPMethod, HTTPStatus
 
-from client import Request
-from .base import BaseRouter
+from client import Request, HttpClient
 
 
-class MessagesRouter(BaseRouter):
+class MessagesRouter(HttpClient):
 
     __URL_CHAT_MESSAGES: str = (
         'messages/?chat_id={chat_id}&per={per}&page={page}'

@@ -1,10 +1,9 @@
 from http import HTTPStatus, HTTPMethod
 
-from client import Request
-from .base import BaseRouter
+from client import Request, HttpClient
 
 
-class GroupTagsRouter(BaseRouter):
+class GroupTagsRouter(HttpClient):
 
     __URL: str = 'group_tags/'
     __URL_ID: str = 'group_tags/{id}/users'

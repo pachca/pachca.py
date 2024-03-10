@@ -1,3 +1,5 @@
+import asyncio
+
 from client import HttpClient
 from methods import BotMethods
 

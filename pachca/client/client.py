@@ -8,9 +8,15 @@ from .types import Request
 class HttpClient:
     """HTTP API клиент."""
 
+    BASE_URL = 'https://api.pachca.com/api/shared/v1/{postfix}'
+
     def __init__(self, token=None, **kwargs):
         """Инициализируем клиент."""
         self._session = Session(token)
+
+    @classmethod
+    def _make_endpoint(cls, url) -> str:
+        return cls.BASE_URL.format(postfix=url)
 
     async def make_request(
             self,
