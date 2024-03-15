@@ -1,1 +1,1 @@
-from .router import Router  # noqa
+from pachca.routers.router import Router  # noqa

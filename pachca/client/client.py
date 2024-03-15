@@ -1,8 +1,8 @@
 from aiohttp import ClientConnectionError
 
-from .errors import ApiClientException, WrongStatusError
-from .session import Session
-from .types import Request
+from pachca.client.errors import ApiClientException, WrongStatusError
+from pachca.client.session import Session
+from pachca.client.types import Request
 
 
 class HttpClient:

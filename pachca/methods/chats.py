@@ -1,5 +1,5 @@
-from client import HttpClient, Request, RequestData
-from routers import Router
+from pachca.client import HttpClient, Request, RequestData
+from pachca.routers import Router
 
 
 class ChatsMethods:

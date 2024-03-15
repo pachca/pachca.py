@@ -1,7 +1,7 @@
 from http import HTTPStatus, HTTPMethod
 
-from client import Request
-from .base import BaseRouter
+from pachca.client import Request
+from pachca.routers.base import BaseRouter
 
 
 class GroupTagsRouter(BaseRouter):
