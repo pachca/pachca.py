@@ -1,6 +1,6 @@
 from aiohttp import ClientConnectionError
 
-from pachca.client.errors import ApiClientException, WrongStatusError
+from pachca.client.errors import ApiClientError, WrongStatusError
 from pachca.client.session import Session
 from pachca.client.types import Request
 
@@ -36,4 +36,4 @@ class HttpClient:
                 })
             return resp_json
         except (ConnectionError, TimeoutError, ClientConnectionError) as error:
-            raise ApiClientException('Ошибка подключения', error)
+            raise ApiClientError('Ошибка подключения', error)

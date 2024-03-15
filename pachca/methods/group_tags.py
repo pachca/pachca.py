@@ -1,4 +1,4 @@
-from pachca.client import HttpClient, Request
+from pachca.client import Request, HttpClient
 from pachca.routers import Router
 
 
