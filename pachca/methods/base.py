@@ -1,9 +1,9 @@
-from .chats import ChatsMethods
-from .group_tags import GroupTagsMethods
-from .messages import MessagesMethods
-from .tasks import TasksMethods
-from .uploads import UploadsMethods
-from .users import UserMethods
+from pachca.methods.chats import ChatsMethods
+from pachca.methods.group_tags import GroupTagsMethods
+from pachca.methods.messages import MessagesMethods
+from pachca.methods.tasks import TasksMethods
+from pachca.methods.uploads import UploadsMethods
+from pachca.methods.users import UserMethods
 
 
 class BotMethods(

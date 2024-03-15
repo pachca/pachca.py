@@ -1,6 +1,6 @@
-from client import HttpClient, Request, RequestData
+from pachca.client import HttpClient, Request, RequestData
 
-from routers import Router
+from pachca.routers import Router
 
 
 class MessagesMethods:

@@ -1,8 +1,8 @@
 from http import HTTPMethod, HTTPStatus
 
-from client import Request
+from pachca.client import Request
 
-from .base import BaseRouter
+from pachca.routers.base import BaseRouter
 
 
 class ChatsRouter(BaseRouter):

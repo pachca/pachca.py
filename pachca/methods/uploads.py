@@ -1,7 +1,7 @@
 from string import Template
 
-from client import HttpClient, Request
-from routers import Router
+from pachca.client import HttpClient, Request
+from pachca.routers import Router
 
 
 class UploadsMethods:

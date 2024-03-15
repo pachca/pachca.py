@@ -1,5 +1,5 @@
-from client import HttpClient
-from methods import BotMethods
+from pachca.client import HttpClient
+from pachca.methods import BotMethods
 
 
 class Bot:

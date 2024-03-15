@@ -2,5 +2,5 @@ class WrongStatusError(Exception):
     """Получен неправильный статус код."""
 
 
-class ApiClientException(Exception):
+class ApiClientError(Exception):
     """Ошибка работы клиента."""

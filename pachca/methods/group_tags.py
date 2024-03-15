@@ -1,5 +1,5 @@
-from client import HttpClient, Request
-from routers import Router
+from pachca.client import Request, HttpClient
+from pachca.routers import Router
 
 
 class GroupTagsMethods:
