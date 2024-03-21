@@ -10,7 +10,7 @@ class Bot:
     def __init__(self, token):
         self.client = HttpClient(token)
 
-    async def get_users(self):
+    async def get_users(self, *args, **kwargs):
         """
         Метод для получения списка пользователей.
         """
