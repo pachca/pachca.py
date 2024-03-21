@@ -15,6 +15,9 @@ class ChatData(BaseModel):
 
     name: str
     public: Optional[bool] = False
+    channel: Optional[bool] = False
+    member_ids: Optional[list[int]] = None
+    group_tag_ids: Optional[list[int]] = None
 
 
 class MessagesData(BaseModel):
