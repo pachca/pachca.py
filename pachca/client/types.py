@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class File(BaseModel):
-
     key: str
     name: str
     file_type: str
@@ -12,7 +11,6 @@ class File(BaseModel):
 
 
 class ChatData(BaseModel):
-
     name: str
     public: Optional[bool] = False
     channel: Optional[bool] = False
@@ -21,7 +19,6 @@ class ChatData(BaseModel):
 
 
 class MessagesData(BaseModel):
-
     entity_type: Optional[str] = None
     entity_id: int = None
     parrent_message_id: Optional[int] = None
@@ -30,7 +27,6 @@ class MessagesData(BaseModel):
 
 
 class TaskData(BaseModel):
-
     kind: str
     content: Optional[str] = None
     due_at: Optional[str] = None
@@ -39,7 +35,6 @@ class TaskData(BaseModel):
 
 
 class RequestData(BaseModel):
-
     message: Optional[MessagesData] = None
     code: Optional[str] = None
     task: Optional[TaskData] = None
