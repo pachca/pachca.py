@@ -15,8 +15,9 @@ class ChatsMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def create_chat(cls, client: HttpClient, data: dict):
+    async def create_chat(cls, client: HttpClient, **data):
         request: Request = Router.create_chat()
+        data['chat'] = data
         request.data = RequestData(**data).to_dict()
         return await client.make_request(request)
 

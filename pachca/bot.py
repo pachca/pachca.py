@@ -129,9 +129,10 @@ class Bot:
         Необходимые параметры:
 
         id: int - Идентификатор редактируемого сообщения.
+
         message {
             content: str - Текст сообщения.
-            files [
+            files: list - [
                 key: str - 	Путь к файлу, полученный в результате загрузки
                             файла (каждый файл в каждом сообщении должен
                             иметь свой уникальный key, не допускается
@@ -164,23 +165,22 @@ class Bot:
         """
         return await BotMethods.get_chat_by_id(self.client, id=id)
 
-    async def create_chat(self, chat: dict):
+    async def create_chat(self, *args, **kwargs):
         """
         Метод для создания новой беседы или канала.
         Необходимые параметры:
 
-        chat {
-            name: str - Название
-            member_ids: list[int] - Массив идентификаторов пользователей,
-                                    которые станут участниками
-            group_tag_ids: list[int] - Массив идентификаторов тегов,
-                                       которые станут участниками
-            channel: bool - Тип: беседа (по умолчанию, false) или канал (true)
-            public: Доступ: закрытый (по умолчанию, false) или открытый (true)
-        }
-
+        **kwargs:
+        name: str - Название
+        member_ids: list[int] - Массив идентификаторов пользователей,
+                                которые станут участниками
+        group_tag_ids: list[int] - Массив идентификаторов тегов,
+                                   которые станут участниками
+        channel: bool - Тип: беседа (по умолчанию, false) или канал (true)
+        public: bool - Доступ: закрытый (по умолчанию, false) или открытый
+        (true)
         """
-        return await BotMethods.create_chat(self.client, chat)
+        return await BotMethods.create_chat(self.client, **kwargs)
 
     async def add_members_to_chat(
             self,
