@@ -53,20 +53,25 @@ if __name__ == '__main__':
 
   * **Новая беседа или канал**
     ``` python
-    class Bot.create_chat(client: HttpClient, chat: dict)
+    class Bot.create_chat(client: HttpClient,  *args, **kwargs)
     ```
     *Параметры:*
       * **chat**: 
         ``` python
-        {
-          "chat": {
-              "name": str,
-              "members_ids": list(int),
-              "group_tag_ids": list(int),
-              "channel": bool,
-              "public": bool
-            }
-        }
+        """
+        Метод для создания новой беседы или канала.
+        Необходимые параметры:
+
+        **kwargs:
+        name: str - Название
+        member_ids: list[int] - Массив идентификаторов пользователей,
+                                которые станут участниками
+        group_tag_ids: list[int] - Массив идентификаторов тегов,
+                                   которые станут участниками
+        channel: bool - Тип: беседа (по умолчанию, false) или канал (true)
+        public: bool - Доступ: закрытый (по умолчанию, false) или открытый
+        (true)
+        """
         ```
     Метод для создания новой беседы или нового канала. При создании беседы или канала вы автоматически становитесь участником.
 
