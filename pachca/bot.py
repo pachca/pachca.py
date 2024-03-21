@@ -14,17 +14,20 @@ class Bot:
         """
         Метод для получения списка пользователей.
         """
-        return await BotMethods.get_users(self.client)
+        kwargs['client'] = self.client
+        return await BotMethods.get_users(*args, **kwargs)
 
-    async def get_user(self, id: int):
+    async def get_user(self, *args, **kwargs):
         """
         Метод для получения информации о пользователе.
+
         Необходимые параметры:
 
         id: int
 
         """
-        return await BotMethods.get_user_by_id(self.client, id=id)
+        kwargs['client'] = self.client
+        return await BotMethods.get_user_by_id(*args, **kwargs)
 
     async def get_group_tags(self):
         """
