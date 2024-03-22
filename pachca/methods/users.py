@@ -11,8 +11,7 @@ class UserMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def get_user_by_id(cls, *args, **kwargs):
-        id: int = kwargs.get('id')
+    async def get_user_by_id(cls, *args, id: int, **kwargs):
         client: HttpClient = kwargs.get('client')
         request: Request = Router.get_user_by_id(id)
         return await client.make_request(request)
