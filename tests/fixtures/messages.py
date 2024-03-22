@@ -97,8 +97,6 @@ RESPONSE_NEW_MESSAGE_DATA = {
 }
 
 EDIT_MESSAGE = {
-    'message': {
-        'content': 'Привет',
-        'files': []
-    }
+    'content': 'Привет',
+    'files': []
 }

@@ -106,7 +106,7 @@ class TestMessages(TestBaseClient):
         при безошибочном выполнении ботом метода 'edit_message'.
         """
         self.mock.return_value = RESPONSE_NEW_MESSAGE_DATA
-        response = await self.bot.edit_message(TEST_ID, EDIT_MESSAGE)
+        response = await self.bot.edit_message(id=TEST_ID, content=EDIT_MESSAGE['content'])
         self.assertEqual(
             RESPONSE_NEW_MESSAGE_DATA,
             response,
@@ -133,4 +133,4 @@ class TestMessages(TestBaseClient):
                 "телом запроса должна возникать ошибка ValidationError"
             )
         ):
-            await self.bot.edit_message(TEST_ID, NEW_MESSAGE_INCORRECT)
+            await self.bot.edit_message(id=TEST_ID, content=NEW_MESSAGE_INCORRECT['content'], files=NEW_MESSAGE_INCORRECT['files'])
