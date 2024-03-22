@@ -31,7 +31,7 @@ class TestGroupTags(TestBaseClient):
         при безошибочном выполении ботом метода 'get_tag_users'.
         """
         self.mock.return_value = EXPECT_RESPONSE_DATA_USERS
-        response = await self.bot.get_tag_users(TEST_ID)
+        response = await self.bot.get_tag_users(tag_id=TEST_ID)
         self.assertEqual(
             response,
             EXPECT_RESPONSE_DATA_USERS,
