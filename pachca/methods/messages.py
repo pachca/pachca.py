@@ -29,10 +29,11 @@ class MessagesMethods:
 
     @classmethod
     async def edit_message(
-        cls, client: HttpClient, id: int, data: dict
+        cls, *args, client: HttpClient, id: int, message: MessagesData, **kwargs
     ) -> dict:
         request: Request = Router.edit_message(id)
-        request.data = RequestData(**data).to_dict()
+        print(message)
+        request.data = RequestData(**message).to_dict()
         return await client.make_request(request)
 
     @classmethod
