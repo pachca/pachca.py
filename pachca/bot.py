@@ -93,15 +93,15 @@ class Bot:
             raise ValueError('Сообщение не может быть пустым!')
         if entity_id is None:
             raise ValueError('Необходимо указать "entity_id"!')
-        message = MessagesData(
+        message_data = MessagesData(
             entity_type=entity_type,
             entity_id=entity_id,
             content=content,
             files=files,
             parent_message_id=parent_message_id,
         )
-        message_data = {'message': message}
-        return await BotMethods.send_messages(*args, client=self.client, message=message_data, **kwargs)
+        message = {'message': message_data}
+        return await BotMethods.send_messages(*args, client=self.client, message=message, **kwargs)
 
     async def get_messages(
         self, *args, chat_id: int, per: int = None, page: int = 1, **kwargs
@@ -133,7 +133,7 @@ class Bot:
         """
         return await BotMethods.get_message_by_id(*args, client=self.client, id=id, **kwargs)
 
-    async def edit_message(self, id: int, message: dict) -> dict:
+    async def edit_message(self, *args, id: int, content: str, files: list[str, int] = None, **kwargs) -> dict:
         """
         Метод для редактирования сообщения или комментария.
 
@@ -161,7 +161,14 @@ class Bot:
         }
 
         """
-        return await BotMethods.edit_message(self.client, id, message)
+        if files is None:
+            files = []
+        message_data = MessagesData(
+            content=content,
+            files=files,
+        )
+        message = {'message': message_data}
+        return await BotMethods.edit_message(*args, client=self.client, id=id, message=message, **kwargs)
 
     async def get_chats(self):
         """
