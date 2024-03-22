@@ -17,7 +17,7 @@ class Bot:
         kwargs['client'] = self.client
         return await BotMethods.get_users(*args, **kwargs)
 
-    async def get_user(self, *args, **kwargs):
+    async def get_user(self, *args, id: int, **kwargs):
         """
         Метод для получения информации о пользователе.
 
@@ -27,23 +27,25 @@ class Bot:
 
         """
         kwargs['client'] = self.client
-        return await BotMethods.get_user_by_id(*args, **kwargs)
+        return await BotMethods.get_user_by_id(*args, id=id, **kwargs)
 
-    async def get_group_tags(self):
+    async def get_group_tags(self, *args, **kwargs):
         """
         Метод для получения актуального списка тегов сотрудников.
         Названия тегов являются уникальными в компании.
         """
-        return await BotMethods.get_group_tags(self.client)
+        kwargs['client'] = self.client
+        return await BotMethods.get_group_tags(*args, **kwargs)
 
-    async def get_tag_users(self, tag_id):
+    async def get_tag_users(self, *args, tag_id: int, **kwargs):
         """
         Метод для получения актуального списка сотрудников тега.
         Необходимые параметы:
 
         tag_id: int
         """
-        return await BotMethods.get_group_tag_users(self.client, tag_id=tag_id)
+        kwargs['client'] = self.client
+        return await BotMethods.get_group_tag_users(*args, tag_id=tag_id, **kwargs)
 
     async def upload_file(self, file_path: str) -> str:
         """
