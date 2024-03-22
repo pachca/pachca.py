@@ -1,4 +1,4 @@
-from pachca.client import HttpClient, Request, RequestData
+from pachca.client import HttpClient, Request, RequestData, ChatData
 from pachca.routers import Router
 
 
@@ -15,10 +15,9 @@ class ChatsMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def create_chat(cls, client: HttpClient, **data):
+    async def create_chat(cls, *args, client: HttpClient, chat: ChatData, **kwargs):
         request: Request = Router.create_chat()
-        data['chat'] = data
-        request.data = RequestData(**data).to_dict()
+        request.data = RequestData(**chat).to_dict()
         return await client.make_request(request)
 
     @classmethod
