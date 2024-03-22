@@ -1,4 +1,4 @@
-from pachca.client import HttpClient, Request, RequestData
+from pachca.client import HttpClient, Request, RequestData, MessagesData
 
 from pachca.routers import Router
 
@@ -7,22 +7,22 @@ class MessagesMethods:
 
     @classmethod
     async def send_messages(
-        cls, client: HttpClient, data: dict
+        cls, *args, client: HttpClient, message: MessagesData, **kwargs
     ) -> dict:
         request: Request = Router.send_messages()
-        request.data = RequestData(**data).to_dict()
+        request.data = RequestData(**message).to_dict()
         return await client.make_request(request)
 
     @classmethod
     async def get_messages(
-        cls, client: HttpClient, chat_id: int, per: int, page: int
+        cls, *args, client: HttpClient, chat_id: int, per: int, page: int, **kwargs
     ) -> dict:
         request: Request = Router.get_messages(chat_id, per, page)
         return await client.make_request(request)
 
     @classmethod
     async def get_message_by_id(
-        cls, client: HttpClient, id: int
+        cls, *args, client: HttpClient, id: int, **kwargs
     ) -> dict:
         request: Request = Router.get_message_by_id(id)
         return await client.make_request(request)
