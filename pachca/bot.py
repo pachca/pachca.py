@@ -1,4 +1,4 @@
-from pachca.client import HttpClient
+from pachca.client import HttpClient, MessagesData, ChatData
 from pachca.methods import BotMethods
 
 
@@ -14,8 +14,7 @@ class Bot:
         """
         Метод для получения списка пользователей.
         """
-        kwargs['client'] = self.client
-        return await BotMethods.get_users(*args, **kwargs)
+        return await BotMethods.get_users(*args, client=self.client, **kwargs)
 
     async def get_user(self, *args, id: int, **kwargs):
         """
@@ -26,16 +25,14 @@ class Bot:
         id: int
 
         """
-        kwargs['client'] = self.client
-        return await BotMethods.get_user_by_id(*args, id=id, **kwargs)
+        return await BotMethods.get_user_by_id(*args, client=self.client, id=id, **kwargs)
 
     async def get_group_tags(self, *args, **kwargs):
         """
         Метод для получения актуального списка тегов сотрудников.
         Названия тегов являются уникальными в компании.
         """
-        kwargs['client'] = self.client
-        return await BotMethods.get_group_tags(*args, **kwargs)
+        return await BotMethods.get_group_tags(*args, client=self.client, **kwargs)
 
     async def get_tag_users(self, *args, tag_id: int, **kwargs):
         """
@@ -44,8 +41,7 @@ class Bot:
 
         tag_id: int
         """
-        kwargs['client'] = self.client
-        return await BotMethods.get_group_tag_users(*args, tag_id=tag_id, **kwargs)
+        return await BotMethods.get_group_tag_users(*args, client=self.client, tag_id=tag_id, **kwargs)
 
     async def upload_file(self, file_path: str) -> str:
         """
@@ -61,41 +57,54 @@ class Bot:
         """
         return await BotMethods.upload_file(self.client, file_path)
 
-    async def send_message(self, message: dict) -> dict:
+    async def send_message(
+            self, *args, entity_id: int, content: str, entity_type: str = None,
+            files: list[str, int] = None, parent_message_id: int = None, **kwargs
+    ) -> dict:
         """
         Метод для отправки сообщения.
 
         Необходимые параметры:
 
-        message {
-            entity_type: str - Тип сущности: беседа или канал (по умолчанию,
-                               discussion),пользователь (user), тред (thread).
-                               Для создания треда к сообщению воспользуйтесь
-                               методом новый тред.
-            entity_id: int - Идентификатор сущности.
-            content: str - Текст сообщения.
-            files [
-                key: str - 	Путь к файлу, полученный в результате загрузки
-                            файла (каждый файл в каждом сообщении должен
-                            иметь свой уникальный key, не допускается
-                            использование одного и того же key в разных
-                            сообщениях).
-                name: str - Название файла, которое вы хотите отображать
-                            пользователю (рекомендуется писать вместе
-                            с расширением).
-                file_type: str - Тип файла: файл (file), изображение (image).
-                size: int - Размер файла в байтах, отображаемый пользователю.
-            ]
-            parent_message_id: int - Идентификатор сообщения. Указывается в
-                                     случае, если вы отправляете ответ
-                                     на другое сообщение.
-        }
+        entity_type: str - Тип сущности: беседа или канал (по умолчанию,
+                           discussion),пользователь (user), тред (thread).
+                           Для создания треда к сообщению воспользуйтесь
+                           методом новый тред.
+        entity_id: int - Идентификатор сущности.
+        content: str - Текст сообщения.
+        files [
+            key: str - 	Путь к файлу, полученный в результате загрузки
+                        файла (каждый файл в каждом сообщении должен
+                        иметь свой уникальный key, не допускается
+                        использование одного и того же key в разных
+                        сообщениях).
+            name: str - Название файла, которое вы хотите отображать
+                        пользователю (рекомендуется писать вместе
+                        с расширением).
+            file_type: str - Тип файла: файл (file), изображение (image).
+            size: int - Размер файла в байтах, отображаемый пользователю.
+        ]
+        parent_message_id: int - Идентификатор сообщения. Указывается в
+                                 случае, если вы отправляете ответ
+                                 на другое сообщение.
 
         """
-        return await BotMethods.send_messages(self.client, message)
+        if len(str(content)) < 1:
+            raise ValueError('Сообщение не может быть пустым!')
+        if entity_id is None:
+            raise ValueError('Необходимо указать "entity_id"!')
+        message = MessagesData(
+            entity_type=entity_type,
+            entity_id=entity_id,
+            content=content,
+            files=files,
+            parent_message_id=parent_message_id,
+        )
+        message_data = {'message': message}
+        return await BotMethods.send_messages(*args, client=self.client, message=message_data, **kwargs)
 
     async def get_messages(
-        self, chat_id: int, per: int = None, page: int = 1
+        self, *args, chat_id: int, per: int = None, page: int = 1, **kwargs
     ) -> list[dict]:
         """
         Метод для получения списка сообщений.
@@ -111,9 +120,9 @@ class Bot:
         page: int - Страница выборки (по умолчанию 1).
 
         """
-        return await BotMethods.get_messages(self.client, chat_id, per, page)
+        return await BotMethods.get_messages(*args, client=self.client, chat_id=chat_id, per=per, page=page, **kwargs)
 
-    async def get_message_by_id(self, id: int) -> dict:
+    async def get_message_by_id(self, *args, id: int, **kwargs) -> dict:
         """
         Метод для получения информации о сообщении.
 
@@ -122,7 +131,7 @@ class Bot:
         id: int - Идентификатор получаемого сообщения.
 
         """
-        return await BotMethods.get_message_by_id(self.client, id)
+        return await BotMethods.get_message_by_id(*args, client=self.client, id=id, **kwargs)
 
     async def edit_message(self, id: int, message: dict) -> dict:
         """
@@ -170,12 +179,12 @@ class Bot:
         """
         return await BotMethods.get_chat_by_id(self.client, id=id)
 
-    async def create_chat(self, *args, **kwargs):
+    async def create_chat(self, *args, name: str, member_ids: list[int] = None,
+                          group_tag_ids: list[int] = None, channel: bool = False, public: bool = False, **kwargs):
         """
         Метод для создания новой беседы или канала.
         Необходимые параметры:
 
-        **kwargs:
         name: str - Название
         member_ids: list[int] - Массив идентификаторов пользователей,
                                 которые станут участниками
@@ -185,7 +194,15 @@ class Bot:
         public: bool - Доступ: закрытый (по умолчанию, false) или открытый
         (true)
         """
-        return await BotMethods.create_chat(self.client, **kwargs)
+        chat = ChatData(
+            name=name,
+            member_ids=member_ids,
+            group_tag_ids=group_tag_ids,
+            channel=channel,
+            public=public,
+        )
+        chat_data = {'chat': chat}
+        return await BotMethods.create_chat(*args, client=self.client, chat=chat_data, **kwargs)
 
     async def add_members_to_chat(
             self,
