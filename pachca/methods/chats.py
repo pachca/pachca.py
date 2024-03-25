@@ -5,7 +5,7 @@ from pachca.routers import Router
 class ChatsMethods:
 
     @classmethod
-    async def get_chats(cls, client: HttpClient):
+    async def get_chats(cls, *args, client: HttpClient, **kwargs):
         request: Request = Router.get_chats()
         return await client.make_request(request)
 

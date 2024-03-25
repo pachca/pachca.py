@@ -170,11 +170,11 @@ class Bot:
         message = {'message': message_data}
         return await BotMethods.edit_message(*args, client=self.client, id=id, message=message, **kwargs)
 
-    async def get_chats(self):
+    async def get_chats(self, *args, **kwargs):
         """
         Метод для получение списка бесед и каналов.
         """
-        return await BotMethods.get_chats(self.client)
+        return await BotMethods.get_chats(*args, client=self.client, **kwargs)
 
     async def get_chat_by_id(self, id: int = None):
         """
