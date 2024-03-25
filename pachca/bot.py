@@ -176,7 +176,7 @@ class Bot:
         """
         return await BotMethods.get_chats(*args, client=self.client, **kwargs)
 
-    async def get_chat_by_id(self, id: int = None):
+    async def get_chat_by_id(self, *args, id: int = None, **kwargs):
         """
         Метод для получение информации о беседе или канале.
         Необходимые параметры:
@@ -184,7 +184,7 @@ class Bot:
         id: int
 
         """
-        return await BotMethods.get_chat_by_id(self.client, id=id)
+        return await BotMethods.get_chat_by_id(*args, client=self.client, id=id, **kwargs)
 
     async def create_chat(self, *args, name: str, member_ids: list[int] = None,
                           group_tag_ids: list[int] = None, channel: bool = False, public: bool = False, **kwargs):

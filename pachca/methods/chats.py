@@ -10,7 +10,7 @@ class ChatsMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def get_chat_by_id(cls, client: HttpClient, id: int):
+    async def get_chat_by_id(cls, *args, client: HttpClient, id: int, **kwargs):
         request: Request = Router.get_chat_by_id(id)
         return await client.make_request(request)
 
