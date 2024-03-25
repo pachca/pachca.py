@@ -23,7 +23,7 @@ class TestMembersInChatsAndChannelsTest(TestBaseClient):
         """
         self.mock.return_value = EMPTY_ARRAY
         response = await self.bot.add_members_to_chat(
-            TEST_ID, PREPARE_CORRECT_MEMBERS
+            id=TEST_ID, member_ids=PREPARE_CORRECT_MEMBERS
         )
         self.assertEqual(
             EMPTY_ARRAY,
@@ -70,7 +70,7 @@ class TestMembersInChatsAndChannelsTest(TestBaseClient):
             )
         ):
             await self.bot.add_members_to_chat(
-                TEST_ID, PREPARE_INCORRECT_MEMBERS
+                id=TEST_ID, member_ids=PREPARE_INCORRECT_MEMBERS
             )
 
     async def test_add_tags_to_chat_incorrect_data(self) -> None:
