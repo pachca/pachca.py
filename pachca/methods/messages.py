@@ -32,7 +32,6 @@ class MessagesMethods:
         cls, *args, client: HttpClient, id: int, message: MessagesData, **kwargs
     ) -> dict:
         request: Request = Router.edit_message(id)
-        print(message)
         request.data = RequestData(**message).to_dict()
         return await client.make_request(request)
 
