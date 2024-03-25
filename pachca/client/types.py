@@ -37,6 +37,7 @@ class TaskData(BaseModel):
 class RequestData(BaseModel):
     message: Optional[MessagesData] = None
     code: Optional[str] = None
+    silent: Optional[bool] = False
     task: Optional[TaskData] = None
     chat: Optional[ChatData] = None
     member_ids: Optional[list[int]] = None
