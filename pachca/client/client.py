@@ -18,7 +18,7 @@ class HttpClient:
                     data = await response.content.read()
 
                     if data == b'':
-                        return None
+                        return ''
 
                     response_json = json.loads(data)
 
