@@ -1,12 +1,18 @@
 from typing import Any, Optional
+from enum import Enum
 
 from pydantic import BaseModel
+
+
+class FileType(str, Enum):
+    FILE = 'file'
+    IMAGE = 'image'
 
 
 class File(BaseModel):
     key: str
     name: str
-    file_type: str
+    file_type: FileType
     size: int
 
 

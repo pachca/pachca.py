@@ -1,6 +1,7 @@
-from string import Template
+import os
 
 from pachca.client import HttpClient, Request
+from pachca.client.types import File, FileType
 from pachca.routers import Router
 
 
@@ -14,15 +15,28 @@ class UploadsMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def upload_file(cls, client: HttpClient, file_path: str) -> str:
+    async def upload_file(
+        cls,
+        client: HttpClient,
+        file_path: str,
+        file_type: FileType
+    ) -> str:
         request_data = await cls.uploads(client)
+
         upload_url = request_data.pop('direct_url')
         file_name = file_path.split('/')[-1]
-        key = Template(request_data['key']).substitute(filename=file_name)
+
+        request_data['key'] = request_data['key'].replace(r'${filename}', file_name)
         with open(file_path, 'rb') as file:
-            file_data = file.read()
-        request_data['file'] = file_data
+            request_data['file'] = file.read()
+
         request: Request = Router.upload_file(upload_url)
         request.file_data = request_data
         await client.make_request(request)
-        return key
+
+        return File(
+            key=request_data['key'],
+            name=file_name,
+            file_type=file_type,
+            size=os.path.getsize(file_path)
+        )
