@@ -55,8 +55,8 @@ class TestMessagesReactions(TestBaseClient):
         """
         self.mock.return_value = EMPTY_ARRAY
         response = await self.bot.delete_reaction(
-            TEST_ID,
-            REACTION,
+            message_id=TEST_ID,
+            code=REACTION,
         )
         self.assertEqual(
             EMPTY_ARRAY,
