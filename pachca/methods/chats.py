@@ -39,7 +39,8 @@ class ChatsMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def add_tags_to_chat(cls, client: HttpClient, id: int, data: dict):
+    async def add_tags_to_chat(cls, *args, client: HttpClient, id: int, group_tag_ids: list[int], **kwargs):
+        kwargs['group_tag_ids'] = group_tag_ids
         request: Request = Router.add_tags_to_chat(id)
-        request.data = RequestData(**data).to_dict()
+        request.data = RequestData(**kwargs).to_dict()
         return await client.make_request(request)
