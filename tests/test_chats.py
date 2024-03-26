@@ -52,7 +52,7 @@ class TestChats(TestBaseClient):
         """
         new_chat_data = NEW_CHAT_DATA
         self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
-        response = await self.bot.create_chat(new_chat_data)
+        response = await self.bot.create_chat(**new_chat_data)
         self.assertEqual(
             response,
             EXPECT_RESPONSE_DATA_CHAT,
@@ -76,7 +76,7 @@ class TestChats(TestBaseClient):
                 "телом запроса должна возникать ошибка ValidationError"
             )
         ):
-            await self.bot.create_chat(new_chat_data)
+            await self.bot.create_chat(**new_chat_data)
 
     # async def test_update_chats_correct_data(self) -> None:
     #     """Тестирует метод 'put' c корректным телом запроса.

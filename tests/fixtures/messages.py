@@ -69,19 +69,16 @@ INFO_MESSAGES = {
 }
 
 NEW_MESSAGE = {
-    'message': {
-
-        'entity_type': 'discussion',
-        'entity_id': 198,
-        'content': 'Привет!',
-    }
+    'entity_type': 'discussion',
+    'entity_id': 198,
+    'content': 'Привет!',
 }
 
 NEW_MESSAGE_INCORRECT = {
-    'message': {
-        'entity_type': 'discussion',
-        'entity_id': 198,
-    }
+    'entity_type': 'discussion',
+    'entity_id': 198,
+    'content': 'Привет!',
+    'files': 1,
 }
 
 RESPONSE_NEW_MESSAGE_DATA = {
@@ -100,8 +97,6 @@ RESPONSE_NEW_MESSAGE_DATA = {
 }
 
 EDIT_MESSAGE = {
-    'message': {
-        'content': 'Привет',
-        'files': []
-    }
+    'content': 'Привет',
+    'files': []
 }

@@ -32,7 +32,7 @@ class TestUsers(TestBaseClient):
         при безошибочном выполении ботом метода 'get_user'.
         """
         self.mock.return_value = EXPECT_RESPONSE_DATA_USER
-        response = await self.bot.get_user(TEST_ID)
+        response = await self.bot.get_user(id=TEST_ID)
         self.assertEqual(
             response,
             EXPECT_RESPONSE_DATA_USER,

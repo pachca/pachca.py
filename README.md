@@ -41,85 +41,92 @@ if __name__ == '__main__':
 ### Беседы и каналы
   * **Список бесед и каналов**
     ``` python
-    class Bot.get_chats(client: HttpClient)
+    class Bot.get_chats(*args, **kwargs) -> dict:
     ```
     Метод для получение списка бесед и каналов по заданным параметрам.
 
   * **Информация о беседе или канале**
     ``` python
-    class Bot.get_chat_by_id(client: HttpClient, id: int)
+    class Bot.get_chat_by_id(*args, id: int = None, **kwargs) -> dict:
     ```
+    * **Параметры**: 
+        ```
+        id: int - Идентификатор беседы или канала
+        ```
+
     Метод для получение информации о беседе или канале. Для получения беседы или канала вам необходимо знать её id и указать его в URL запроса.
 
   * **Новая беседа или канал**
     ``` python
-    class Bot.create_chat(client: HttpClient, chat: dict)
+    class Bot.create_chat(*args, name: str, member_ids: list[int] = None, group_tag_ids: list[int] = None, 
+                          channel: bool = False, public: bool = False, **kwargs) -> dict:
     ```
-    *Параметры:*
-      * **chat**: 
-        ``` python
-        {
-          "chat": {
-              "name": str,
-              "members_ids": list(int),
-              "group_tag_ids": list(int),
-              "channel": bool,
-              "public": bool
-            }
-        }
+    * **Параметры**: 
+        ```
+        name: str - Название.
+        member_ids: list[int] - Массив идентификаторов пользователей, которые станут участниками.
+        group_tag_ids: list[int] - Массив идентификаторов тегов, которые станут участниками.
+        channel: bool - Тип: беседа (по умолчанию, false) или канал (true).
+        public: bool - Доступ: закрытый (по умолчанию, false) или открытый (true).
         ```
     Метод для создания новой беседы или нового канала. При создании беседы или канала вы автоматически становитесь участником.
 
   * **Добавление пользователей**
     ``` python
-    class Bot.add_members_to_chat(client: HttpClient, id: int, members_ids: dict)
+    class Bot.add_members_to_chat(*args, id: int, member_ids: list[int], silent: bool = False, **kwargs) -> None:
     ```
-    *Параметры:*
-      * **members_ids**: 
-        ``` python
-        {
-            "member_ids": list(int)
-        }
+    * **Параметры**: 
+        ```
+        id: int - Уникальный id беседы или канала.
+        member_ids: list[int] - Массив идентификаторов пользователей, которые станут участниками.
+        silent: bool - 	Cоздавать в чате системное сообщение о добавлении участника, по умолчанию - нет (False).
         ```
     Метод для добавления пользователей в состав участников беседы или канала.
 
   * **Добавление тегов**
     ``` python
-    class Bot.add_tags_to_chat(client: HttpClient, id: int, group_tag_ids: dict)
+    class Bot.add_tags_to_chat(*args, id: int = None, group_tag_ids: list[int] = None, **kwargs) -> None:
     ```
-    *Параметры:*
-      * **group_tag_ids**: 
-        ``` python
-        {
-            "group_tag_ids": list(int)
-        }
+    * **Параметры**: 
+        ```
+        id: int - Идентификатор беседы/канала.
+        group_tag_ids: list[int] - Массив идентификаторов тегов, которые станут участниками.
         ```
     Метод для добавления тегов в состав участников беседы или канала.
 
 ### Cотрудники
   * **Список сотрудников**
     ``` python
-    class Bot.get_users(client: HttpClient)
+    class Bot.get_users(self, *args, **kwargs) -> dict:
     ```
     Метод для получения актуального списка сотрудников вашей компании.
 
   * **Информация о сотруднике**
     ``` python
-    class Bot.get_user(client: HttpClient, id: int)
+    class Bot.get_user(*args, id: int, **kwargs) -> dict:
     ```
+    * **Параметры**: 
+        ```
+        id: int - Идентификатор пользователя.
+        ```
     Метод для получения информации о сотруднике. Для получения сотрудника вам необходимо знать его id.
 
 ### Теги
   * **Список тегов сотрудников**
     ``` python
-    class Bot.get_group_tags(client: HttpClient)
+    class Bot.get_group_tags(*args, **kwargs) -> dict:
     ```
     Метод для получения актуального списка тегов сотрудников. Названия тегов являются уникальными в компании
 
   * **Список сотрудников тега**
     ``` python
-    class Bot.get_tag_users(client: HttpClient, tag_id: int)
+    class Bot.get_tag_users(*args, tag_id: int, **kwargs) -> dict:
     ```
+    * **Параметры**:
+
+        ```
+        id: int - Идентификатор тега, список сотрудников которого необходимо получить.
+        ```
     Метод для получения актуального списка сотрудников тега.
     
 ### Загрузка файлов
@@ -132,90 +139,88 @@ if __name__ == '__main__':
 ### Задачи
   * **Новая задача**
     ``` python
-    class Bot.create_task(client: HttpClient, task: dict)
+    class Bot.create_task(self, *args, kind: str, content: str = None, due_at: str = None,
+                          priority: int = 1, performer_ids: list[int] = None, **kwargs) -> dict:
     ```
-    *Параметры:*
-      * **task**: 
-        ``` python
-        {
-          "task": {
-              "kind": str,
-              "content": str,
-              "due_at": str,
-              "priority": int,
-              "performer_ids": list(int)
-            }
-        }
+    * **Параметры**:
+        ```
+        kind: str - Тип: call (позвонить контакту), meeting (встреча), reminder (напоминание), event (событие), email (написать письмо).
+        content: str - 	Описание (по умолчанию - название типа).
+        due_at: str - Срок выполнения задачи (ISO-8601) в формате YYYY-MM-DDThh:mm:ss.sssTZD. Если указано время 23:59:59.000,
+        то задача будет создана на весь день (без указания времени).
+        priority: int - Приоритет: 1 (по умолчанию), 2 (важно) или 3 (очень важно).
+        performer_ids: list[int] - Массив идентификаторов пользователей, привязываемых к задаче как «ответственные»
+        (по умолчанию ответственным назначаетесь вы).
+        ```
     Метод для создания новой задачи.
 
 ### Сообщения
   * **Новое сообщение**
     ``` python
-    class Bot.send_message(client: HttpClient, message: dict)
+    class Bot.send_message(*args, entity_id: int, content: str, entity_type: str = None,
+                           files: list[str, int] = None, parent_message_id: int = None, **kwargs) -> dict:
     ```
-    *Параметры:*
-      * **message**: 
-        ``` python
-        {
-          "message": {
-              "entity_type": str,
-              "entity_id": int,
-              "content": str,
-              "files": list(File),
-              "parent_message_id": int
-            }
-        }
+    * **Параметры**:
+ 
         ```
-      * **File**: 
-        ``` python
-           {
-                "key": str,
-                "name": str,
-                "file_type": str,
-                "size": int
-            }
+        entity_type: str - Тип сущности: беседа или канал (по умолчанию, discussion),пользователь (user), тред (thread). Для создания треда к сообщению воспользуйтесь методом новый тред.
+        entity_id: int - Идентификатор сущности.
+        content: str - Текст сообщения.
+
+        files [
+            key: str - 	Путь к файлу, полученный в результате загрузки файла (каждый файл в каждом сообщении должен иметь свой уникальный key, не допускается использование одного и того же key в разных сообщениях).
+            name: str - Название файла, которое вы хотите отображать пользователю (рекомендуется писать вместе с расширением).
+            file_type: str - Тип файла: файл (file), изображение (image).
+            size: int - Размер файла в байтах, отображаемый пользователю.
+        ]
+
+        parent_message_id: int - Идентификатор сообщения. Указывается в случае, если вы отправляете ответ на другое сообщение.
         ```
 
     Метод для отправки сообщения в беседу или канал, личного сообщения пользователю или комментария в тред.
 
   * **Информация о сообщении**
     ``` python
-    class Bot.get_message_by_id(client: HttpClient, id: int)
+    class Bot.get_message_by_id(*args, id: int, **kwargs) -> dict:
     ```
+    * **Параметры**:
+
+        ```
+        id: int - Идентификатор получаемого сообщения.
+        ```
     Метод для отправки сообщения в беседу или канал, личного сообщения пользователю или комментария в тред.
 
   * **Список сообщений чата**
     ``` python
-    class Bot.get_messages(client: HttpClient, chat_id: int, per: int, page: int)
+    class Bot.get_messages(*args, chat_id: int, per: int = None, page: int = 1, **kwargs) -> dict:
     ```
-    *Параметры:*
-      * **chat_id:** Идентификатор чата
-      * **per:** Количество возвращаемых сущностей за один запрос (по умолчанию 25, максимум 50)
-      * **page:** Страница выборки (по умолчанию 1)
+    * **Параметры**:
+
+      ```
+        chat_id: int - Идентификатор чата (беседа, канал, диалог или чат треда).
+        per: int - Количество возвращаемых сущностей за один запрос (по умолчанию 25, максимум 50).
+        page: int - Страница выборки (по умолчанию 1).
+
+      ```
     Метод для отправки сообщения в беседу или канал, личного сообщения пользователю или комментария в тред.
 
   * **Редактирование сообщения**
     ``` python
-    class Bot.edit_message(client: HttpClient, id: int, message: dict)
+    class Bot.edit_message(*args, id: int, content: str, files: list[str, int] = None, **kwargs) -> dict:
     ```
-    *Параметры:*
-      * **message**: 
-        ``` python
-        {
-          "message": {
-              "content": str,
-              "files": list(File)
-            }
-        }
+     * **Параметры**:
+
         ```
-      * **File**: 
-        ``` python
-           {
-                "key": str,
-                "name": str,
-                "file_type": str,
-                "size": int
-            }
+        id: int - Идентификатор редактируемого сообщения.
+
+        content: str - Текст сообщения.
+
+        files: list - [
+            key: str - 	Путь к файлу, полученный в результате загрузки файла (каждый файл в каждом сообщении должен иметь свой уникальный key, не допускается использование одного и того же key в разных сообщениях).
+            name: str - Название файла, которое вы хотите отображать пользователю (рекомендуется писать вместе с расширением).
+            file_type: str - Тип файла: файл (file), изображение (image).
+            size: int - Размер файла в байтах, отображаемый пользователю.
+        ]
         ```
 
     Метод для редактирования сообщения или комментария. Для редактирования сообщения вам необходимо знать его id. Все редактируемые параметры сообщения указываются в теле запроса.
@@ -223,42 +228,53 @@ if __name__ == '__main__':
 ### Реакции
   * **Добавление реакции**
     ``` python
-    class Bot.add_reaction(client: HttpClient, id: int, data: dict)
+    class Bot.add_reaction(*args, message_id: int, code: str, **kwargs) -> None:
     ```
-    *Параметры:*
-      * **data**: 
-        ``` python
-        {
-          "code": str
-        }
+     * **Параметры**:
+
         ```
-      * **File**: 
-        ``` python
-           {
-                "key": str,
-                "name": str,
-                "file_type": str,
-                "size": int
-            }
+        message_id: int - Идентификатор сообщения, на которое добавляется реакция.
+        code: str - Emoji символ реакции.
         ```
 
     Метод для добавления реакции на сообщение. Для добавления реакции вам необходимо знать id сообщения.
 
   * **Удаление реакции**
     ``` python
-    class Bot.delete_reaction(client: HttpClient, id: int)
+    class Bot.delete_reaction(*args, message_id: int, code: str, **kwargs) -> None:
     ```
+     * **Параметры**:
+
+        ```
+        message_id: int - Идентификатор сообщения, у которого удаляется реакция.
+
+        code: str - Emoji символ реакции.
+        ```
     Метод для удаления реакции на сообщение. Для удаления реакции вам необходимо знать id сообщения.
 
   * **Список реакций**
     ``` python
-    class Bot.get_reactions(client: HttpClient, id: int)
+    class Bot.get_reactions(*args, message_id: int, **kwargs) -> dict:
     ```
+     * **Параметры**:
+
+        ```
+        message_id: int - Идентификатор сообщения, список реакций на которое необходимо получить.
+
+        Количество возвращаемых сущностей за один запрос (по умолчанию 50, максимум 50).
+
+        Страница выборки (по умолчанию 1).
+        ```
     Метод для получения актуального списка реакций на сообщение.
 
 ### Комментарии
   * **Новый тред**
     ``` python
-    class Bot.create_thread(client: HttpClient, message_id: int)
+    class Bot.create_thread(*args, message_id: int, **kwargs) -> None:
     ```
+     * **Параметры**:
+
+        ```
+        message_id: int - Идентификатор сообщения, к которому создается тред.
+        ```
     Метод для создания нового треда к сообщению.
