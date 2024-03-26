@@ -38,7 +38,7 @@ class TestCommonMethods(TestBaseClient):
             EXPECT_RESPONSE_DATA_UPLOAD_FILE + upload_file_name
         )
         self.mock.return_value = EXPECT_RESPONSE_DATA_UPLOADS
-        response = await self.bot.upload_file(upload_file_path)
+        response = await self.bot.upload_file(upload_file_path, file_type='file')
         self.assertEqual(
             response,
             expect_response_data,
