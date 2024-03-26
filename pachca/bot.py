@@ -1,4 +1,4 @@
-from pachca.client import HttpClient, MessagesData, ChatData
+from pachca.client import HttpClient, MessagesData, ChatData, File, FileType
 from pachca.methods import BotMethods
 
 
@@ -43,7 +43,7 @@ class Bot:
         """
         return await BotMethods.get_group_tag_users(*args, client=self.client, tag_id=tag_id, **kwargs)
 
-    async def upload_file(self, file_path: str) -> str:
+    async def upload_file(self, file_path: str, file_type: FileType) -> str:
         """
         Метод для загрузки файла на сервер.
 
@@ -53,13 +53,14 @@ class Bot:
         Необходимые параметры:
 
         file_path: str - Абсолютный путь до загружаемого файла.
+        file_type: FileType - Тип файла: файл (file), изображение (image).
 
         """
-        return await BotMethods.upload_file(self.client, file_path)
+        return await BotMethods.upload_file(self.client, file_path, file_type)
 
     async def send_message(
             self, *args, entity_id: int, content: str, entity_type: str = None,
-            files: list[str, int] = None, parent_message_id: int = None, **kwargs
+            files: File = None, parent_message_id: int = None, **kwargs
     ) -> dict:
         """
         Метод для отправки сообщения.
@@ -133,7 +134,7 @@ class Bot:
         """
         return await BotMethods.get_message_by_id(*args, client=self.client, id=id, **kwargs)
 
-    async def edit_message(self, *args, id: int, content: str, files: list[str, int] = None, **kwargs) -> dict:
+    async def edit_message(self, *args, id: int, content: str, files: File = None, **kwargs) -> dict:
         """
         Метод для редактирования сообщения или комментария.
 
