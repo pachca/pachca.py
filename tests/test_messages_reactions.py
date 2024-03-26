@@ -17,11 +17,12 @@ class TestMessagesReactions(TestBaseClient):
         при безошибочном выполнении ботом метода 'add_reaction'.
         """
         self.mock.return_value = EMPTY_ARRAY
-        response = await self.bot.add_reaction(TEST_ID, REACTION)
+        response = await self.bot.add_reaction(message_id=TEST_ID, code=REACTION)
         self.assertEqual(
             EMPTY_ARRAY,
             response,
-            'При безошибочном выполнение запроса тело ответа отсутвует')
+            'При безошибочном выполнение запроса тело ответа отсутвует',
+        )
 
     async def test_add_reaction_incorrect(self) -> None:
         """Тестирует метод 'add_reaction'.
@@ -37,11 +38,11 @@ class TestMessagesReactions(TestBaseClient):
             msg=(
                 "При выполнении метода 'add_reaction' c некорректным "
                 "телом запроса должна возникать ошибка ValidationError"
-            )
+            ),
         ):
             await self.bot.add_reaction(
-                TEST_ID,
-                REACTION_INCORRECT
+                message_id=TEST_ID,
+                code=REACTION_INCORRECT,
             )
 
     async def test_delete_reaction(self) -> None:
@@ -55,12 +56,13 @@ class TestMessagesReactions(TestBaseClient):
         self.mock.return_value = EMPTY_ARRAY
         response = await self.bot.delete_reaction(
             TEST_ID,
-            REACTION
+            REACTION,
         )
         self.assertEqual(
             EMPTY_ARRAY,
             response,
-            'При безошибочном выполнение запроса тело ответа отсутвует')
+            'При безошибочном выполнение запроса тело ответа отсутвует',
+        )
 
     async def test_delete_reaction_incorrect(self) -> None:
         """Тестирует метод 'delete_reaction'.
@@ -76,11 +78,11 @@ class TestMessagesReactions(TestBaseClient):
             msg=(
                 "При выполнении метода 'delete_reaction' c некорректным "
                 "телом запроса должна возникать ошибка ValidationError"
-            )
+            ),
         ):
             await self.bot.delete_reaction(
-                TEST_ID,
-                REACTION_INCORRECT
+                message_id=TEST_ID,
+                code=REACTION_INCORRECT,
             )
 
     async def test_get_reactions(self) -> None:
@@ -92,16 +94,19 @@ class TestMessagesReactions(TestBaseClient):
         при безошибочном выполнении ботом метода 'get_reactions'.
         """
         self.mock.return_value = LIST_REACTIONS
-        response = await self.bot.get_reactions(TEST_ID)
+        response = await self.bot.get_reactions(message_id=TEST_ID)
         self.assertEqual(
             LIST_REACTIONS,
             response,
-            'При корректном запросе возвращается список реакций')
+            'При корректном запросе возвращается список реакций',
+        )
         self.assertIsInstance(
             response,
             dict,
-            'Должен возвращаться объект типа dict')
+            'Должен возвращаться объект типа dict',
+        )
         self.assertIsInstance(
             response['data'],
             list,
-            'Ключ "data" содержит список')
+            'Ключ "data" содержит список',
+        )

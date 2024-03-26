@@ -1,13 +1,10 @@
-REACTION = {
-    'code': '👍'
-}
+REACTION = '👍'
 
-REACTION_INCORRECT = {
-    'code': 123
-}
+REACTION_INCORRECT = 123
 
 LIST_REACTIONS = {
-    'data': [
+    'data':
+        [
             {
                 'user_id': 76243,
                 'created_at': '2023-09-11T14:59:35.000Z',
