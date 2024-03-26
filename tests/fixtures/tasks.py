@@ -29,7 +29,7 @@ RESPONSE_CREATED_TASK = {
         'status': 'undone',
         'created_at': '2020-06-04T10:37:57.000Z',
         'performer_ids': [
-          12
+            12
         ]
     }
 }
