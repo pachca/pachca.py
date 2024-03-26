@@ -42,6 +42,11 @@ EXPECT_RESPONSE_DATA_UPLOADS = {
     ),
     "direct_url": "https://api.pachca.com/api/v3/direct_upload"
 }
-EXPECT_RESPONSE_DATA_UPLOAD_FILE = (
-    'attaches/files/93746/e354fd79-9jh6-f2hd-fj83-709dae24c763/'
-)
+EXPECT_RESPONSE_DATA_UPLOAD_FILE = {
+    "key": (
+        "attaches/files/93746/e354fd7"
+        "9-9jh6-f2hd-fj83-709dae24c763/test_common_methods.py"
+    ),
+    "name": "test_common_methods.py",
+    "file_type": "file",
+}
