@@ -251,7 +251,6 @@ class Bot:
         group_tag_ids: list[int] - Массив идентификаторов тегов, которые станут участниками.
 
         """
-        # group_tag_ids = {'group_tag_ids': group_tag_ids}
         return await BotMethods.add_tags_to_chat(
             *args,
             client=self.client,

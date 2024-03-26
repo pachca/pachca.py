@@ -91,7 +91,7 @@ class TestMembersInChatsAndChannelsTest(TestBaseClient):
             )
         ):
             await self.bot.add_tags_to_chat(
-                TEST_ID, PREPARE_INCORRECT_TAGS
+                id=TEST_ID, group_tag_ids=PREPARE_INCORRECT_TAGS
             )
 
 #     async def test_del_correct(self) -> None:
