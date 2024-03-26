@@ -1,4 +1,5 @@
-from pachca.client import HttpClient, MessagesData, ChatData, File, FileType
+from pachca.client import HttpClient, MessagesData, ChatData, TaskData, File, FileType
+
 from pachca.methods import BotMethods
 
 
@@ -10,13 +11,13 @@ class Bot:
     def __init__(self, token):
         self.client = HttpClient(token)
 
-    async def get_users(self, *args, **kwargs):
+    async def get_users(self, *args, **kwargs) -> dict:
         """
         Метод для получения списка пользователей.
         """
         return await BotMethods.get_users(*args, client=self.client, **kwargs)
 
-    async def get_user(self, *args, id: int, **kwargs):
+    async def get_user(self, *args, id: int, **kwargs) -> dict:
         """
         Метод для получения информации о пользователе.
 
@@ -27,14 +28,14 @@ class Bot:
         """
         return await BotMethods.get_user_by_id(*args, client=self.client, id=id, **kwargs)
 
-    async def get_group_tags(self, *args, **kwargs):
+    async def get_group_tags(self, *args, **kwargs) -> dict:
         """
         Метод для получения актуального списка тегов сотрудников.
         Названия тегов являются уникальными в компании.
         """
         return await BotMethods.get_group_tags(*args, client=self.client, **kwargs)
 
-    async def get_tag_users(self, *args, tag_id: int, **kwargs):
+    async def get_tag_users(self, *args, tag_id: int, **kwargs) -> dict:
         """
         Метод для получения актуального списка сотрудников тега.
         Необходимые параметы:
@@ -106,7 +107,7 @@ class Bot:
 
     async def get_messages(
         self, *args, chat_id: int, per: int = None, page: int = 1, **kwargs
-    ) -> list[dict]:
+    ) -> dict:
         """
         Метод для получения списка сообщений.
 
@@ -169,24 +170,24 @@ class Bot:
         message = {'message': message_data}
         return await BotMethods.edit_message(*args, client=self.client, id=id, message=message, **kwargs)
 
-    async def get_chats(self, *args, **kwargs):
+    async def get_chats(self, *args, **kwargs) -> dict:
         """
         Метод для получение списка бесед и каналов.
         """
         return await BotMethods.get_chats(*args, client=self.client, **kwargs)
 
-    async def get_chat_by_id(self, *args, id: int = None, **kwargs):
+    async def get_chat_by_id(self, *args, id: int = None, **kwargs) -> dict:
         """
         Метод для получение информации о беседе или канале.
         Необходимые параметры:
 
-        id: int
+        id: int - Идентификатор беседы или канала
 
         """
         return await BotMethods.get_chat_by_id(*args, client=self.client, id=id, **kwargs)
 
     async def create_chat(self, *args, name: str, member_ids: list[int] = None,
-                          group_tag_ids: list[int] = None, channel: bool = False, public: bool = False, **kwargs):
+                          group_tag_ids: list[int] = None, channel: bool = False, public: bool = False, **kwargs) -> dict:
         """
         Метод для создания новой беседы или канала.
         Необходимые параметры:
@@ -217,7 +218,7 @@ class Bot:
             member_ids: list[int],
             silent: bool = False,
             **kwargs,
-    ):
+    ) -> None:
         """
         Метод для добавления пользователей в состав участников
         беседы или канала.
@@ -225,7 +226,7 @@ class Bot:
 
         id: int - Уникальный id беседы или канала.
         member_ids: list[int] - Массив идентификаторов пользователей, которые станут участниками.
-        silent: bool - 	Cоздавать в чате системное сообщение о добавлении участника, по умолчанию нет (False).
+        silent: bool - 	Cоздавать в чате системное сообщение о добавлении участника, по умолчанию - нет (False).
 
         """
         return await BotMethods.add_members_to_chat(
@@ -239,68 +240,98 @@ class Bot:
 
     async def add_tags_to_chat(
             self,
+            *args,
             id: int = None,
-            group_tag_ids: dict = None
-    ):
+            group_tag_ids: list[int] = None,
+            **kwargs,
+    ) -> None:
         """
         Метод для добавления тегов в состав участников беседы или канала.
         Необходимые параметры:
 
-        group_tag_ids: list[int] - Массив идентификаторов тегов,
-                                    которые станут участниками
+        id: int - Идентификатор беседы/канала.
+        group_tag_ids: list[int] - Массив идентификаторов тегов, которые станут участниками.
 
         """
         return await BotMethods.add_tags_to_chat(
-            self.client,
-            id,
-            group_tag_ids
+            *args,
+            client=self.client,
+            id=id,
+            group_tag_ids=group_tag_ids,
+            **kwargs,
         )
 
-    async def add_reaction(self, message_id, data):
+    async def add_reaction(self, *args, message_id: int, code: str, **kwargs) -> None:
         """
         Метод для добавления реакции на сообщение.
         Для добавления реакции вам необходимо знать id сообщения.
-        """
-        return await BotMethods.add_reaction(self.client,
-                                             id=message_id, data=data)
 
-    async def create_task(self, task: dict):
+        message_id: int - Идентификатор сообщения, на которое добавляется реакция.
+        code: str - Emoji символ реакции.
+        """
+        return await BotMethods.add_reaction(*args, client=self.client,
+                                             id=message_id, code=code, **kwargs)
+
+    async def create_task(self, *args, kind: str, content: str = None, due_at: str = None,
+                          priority: int = 1, performer_ids: list[int] = None, **kwargs) -> dict:
         """
         Метод для создания новой задачи.
-        """
-        return await BotMethods.create_task(self.client, task)
 
-    async def get_reactions(self, message_id: int):
+        kind: str - Тип: call (позвонить контакту), meeting (встреча), reminder (напоминание), event (событие),
+        email (написать письмо).
+        content: str - 	Описание (по умолчанию - название типа).
+        due_at: str - Срок выполнения задачи (ISO-8601) в формате YYYY-MM-DDThh:mm:ss.sssTZD. Если указано время 23:59:59.000,
+        то задача будет создана на весь день (без указания времени).
+        priority: int - Приоритет: 1 (по умолчанию), 2 (важно) или 3 (очень важно).
+        performer_ids: list[int] - Массив идентификаторов пользователей, привязываемых к задаче как «ответственные»
+        (по умолчанию ответственным назначаетесь вы).
+        """
+
+        task_data = TaskData(
+            kind=kind,
+            content=content,
+            due_at=due_at,
+            priority=priority,
+            performer_ids=performer_ids,
+        )
+        task = {'task': task_data}
+        return await BotMethods.create_task(*args, client=self.client, task=task, **kwargs)
+
+    async def get_reactions(self, *args, message_id: int, **kwargs) -> dict:
         """
         Метод для получения актуального списка реакций на сообщение.
 
         Необходимые параметры:
 
-        message_id: int
+        message_id: int - Идентификатор сообщения, список реакций на которое необходимо получить.
 
+        Количество возвращаемых сущностей за один запрос (по умолчанию 50, максимум 50).
+
+        Страница выборки (по умолчанию 1).
         """
-        return await BotMethods.get_reactions(message_id, self.client)
+        return await BotMethods.get_reactions(*args, id=message_id, client=self.client, **kwargs)
 
-    async def delete_reaction(self, message_id: int, reaction: dict):
+    async def delete_reaction(self, *args, message_id: int, code: str, **kwargs) -> None:
         """
         Метод для удаления реакции на сообщение.
 
         Необходимые параметры:
 
-        {code: str - Emoji символ реакции}
+        message_id: int - Идентификатор сообщения, у которого удаляется реакция.
+
+        code: str - Emoji символ реакции.
 
         """
         return await BotMethods.delete_reaction(
-            message_id, self.client, reaction
+            *args, id=message_id, client=self.client, code=code, **kwargs
         )
 
-    async def create_thread(self, message_id: int):
+    async def create_thread(self, *args, message_id: int, **kwargs) -> None:
         """
         Метод для создания нового треда к сообщению.
 
         Необходимые параметры:
 
-        message_id: int
-
+        message_id: int - Идентификатор сообщения, к которому создается тред.
         """
-        return await BotMethods.create_thread(message_id, self.client)
+        return await BotMethods.create_thread(*args, id=message_id, client=self.client, **kwargs)
