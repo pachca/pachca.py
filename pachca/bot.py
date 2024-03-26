@@ -1,4 +1,4 @@
-from pachca.client import HttpClient, MessagesData, ChatData
+from pachca.client import HttpClient, MessagesData, ChatData, TaskData
 from pachca.methods import BotMethods
 
 
@@ -270,11 +270,30 @@ class Bot:
         return await BotMethods.add_reaction(*args, client=self.client,
                                              id=message_id, code=code, **kwargs)
 
-    async def create_task(self, task: dict):
+    async def create_task(self, *args, kind: str, content: str = None, due_at: str = None,
+                          priority: int = 1, performer_ids: list[int] = None, **kwargs):
         """
         Метод для создания новой задачи.
+
+        kind: str - Тип: call (позвонить контакту), meeting (встреча), reminder (напоминание), event (событие),
+        email (написать письмо).
+        content: str - 	Описание (по умолчанию - название типа).
+        due_at: str - Срок выполнения задачи (ISO-8601) в формате YYYY-MM-DDThh:mm:ss.sssTZD. Если указано время 23:59:59.000,
+        то задача будет создана на весь день (без указания времени).
+        priority: int - Приоритет: 1 (по умолчанию), 2 (важно) или 3 (очень важно).
+        performer_ids: list[int] - Массив идентификаторов пользователей, привязываемых к задаче как «ответственные»
+        (по умолчанию ответственным назначаетесь вы).
         """
-        return await BotMethods.create_task(self.client, task)
+
+        task_data = TaskData(
+            kind=kind,
+            content=content,
+            due_at=due_at,
+            priority=priority,
+            performer_ids=performer_ids,
+        )
+        task = {'task': task_data}
+        return await BotMethods.create_task(*args, client=self.client, task=task, **kwargs)
 
     async def get_reactions(self, message_id: int):
         """
