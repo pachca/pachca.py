@@ -36,9 +36,10 @@ class MessagesMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def add_reaction(cls, client: HttpClient, id: int, data: dict):
+    async def add_reaction(cls, *args, client: HttpClient, id: int, code: str, **kwargs):
         request: Request = Router.add_reaction(id)
-        request.data: RequestData = RequestData(**data).to_dict()
+        kwargs['code'] = code
+        request.data: RequestData = RequestData(**kwargs).to_dict()
         return await client.make_request(request)
 
     @classmethod

@@ -259,13 +259,16 @@ class Bot:
             **kwargs,
         )
 
-    async def add_reaction(self, message_id, data):
+    async def add_reaction(self, *args, message_id: int, code: str, **kwargs):
         """
         Метод для добавления реакции на сообщение.
         Для добавления реакции вам необходимо знать id сообщения.
+
+        message_id: int - Идентификатор сообщения, на которое добавляется реакция.
+        code: str - Emoji символ реакции.
         """
-        return await BotMethods.add_reaction(self.client,
-                                             id=message_id, data=data)
+        return await BotMethods.add_reaction(*args, client=self.client,
+                                             id=message_id, code=code, **kwargs)
 
     async def create_task(self, task: dict):
         """
