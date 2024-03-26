@@ -10,13 +10,13 @@ class Bot:
     def __init__(self, token):
         self.client = HttpClient(token)
 
-    async def get_users(self, *args, **kwargs):
+    async def get_users(self, *args, **kwargs) -> dict:
         """
         Метод для получения списка пользователей.
         """
         return await BotMethods.get_users(*args, client=self.client, **kwargs)
 
-    async def get_user(self, *args, id: int, **kwargs):
+    async def get_user(self, *args, id: int, **kwargs) -> dict:
         """
         Метод для получения информации о пользователе.
 
@@ -27,14 +27,14 @@ class Bot:
         """
         return await BotMethods.get_user_by_id(*args, client=self.client, id=id, **kwargs)
 
-    async def get_group_tags(self, *args, **kwargs):
+    async def get_group_tags(self, *args, **kwargs) -> dict:
         """
         Метод для получения актуального списка тегов сотрудников.
         Названия тегов являются уникальными в компании.
         """
         return await BotMethods.get_group_tags(*args, client=self.client, **kwargs)
 
-    async def get_tag_users(self, *args, tag_id: int, **kwargs):
+    async def get_tag_users(self, *args, tag_id: int, **kwargs) -> dict:
         """
         Метод для получения актуального списка сотрудников тега.
         Необходимые параметы:
@@ -105,7 +105,7 @@ class Bot:
 
     async def get_messages(
         self, *args, chat_id: int, per: int = None, page: int = 1, **kwargs
-    ) -> list[dict]:
+    ) -> dict:
         """
         Метод для получения списка сообщений.
 
@@ -168,13 +168,13 @@ class Bot:
         message = {'message': message_data}
         return await BotMethods.edit_message(*args, client=self.client, id=id, message=message, **kwargs)
 
-    async def get_chats(self, *args, **kwargs):
+    async def get_chats(self, *args, **kwargs) -> dict:
         """
         Метод для получение списка бесед и каналов.
         """
         return await BotMethods.get_chats(*args, client=self.client, **kwargs)
 
-    async def get_chat_by_id(self, *args, id: int = None, **kwargs):
+    async def get_chat_by_id(self, *args, id: int = None, **kwargs) -> dict:
         """
         Метод для получение информации о беседе или канале.
         Необходимые параметры:
@@ -185,7 +185,7 @@ class Bot:
         return await BotMethods.get_chat_by_id(*args, client=self.client, id=id, **kwargs)
 
     async def create_chat(self, *args, name: str, member_ids: list[int] = None,
-                          group_tag_ids: list[int] = None, channel: bool = False, public: bool = False, **kwargs):
+                          group_tag_ids: list[int] = None, channel: bool = False, public: bool = False, **kwargs) -> dict:
         """
         Метод для создания новой беседы или канала.
         Необходимые параметры:
@@ -216,7 +216,7 @@ class Bot:
             member_ids: list[int],
             silent: bool = False,
             **kwargs,
-    ):
+    ) -> None:
         """
         Метод для добавления пользователей в состав участников
         беседы или канала.
@@ -242,7 +242,7 @@ class Bot:
             id: int = None,
             group_tag_ids: list[int] = None,
             **kwargs,
-    ):
+    ) -> None:
         """
         Метод для добавления тегов в состав участников беседы или канала.
         Необходимые параметры:
@@ -259,7 +259,7 @@ class Bot:
             **kwargs,
         )
 
-    async def add_reaction(self, *args, message_id: int, code: str, **kwargs):
+    async def add_reaction(self, *args, message_id: int, code: str, **kwargs) -> None:
         """
         Метод для добавления реакции на сообщение.
         Для добавления реакции вам необходимо знать id сообщения.
@@ -271,7 +271,7 @@ class Bot:
                                              id=message_id, code=code, **kwargs)
 
     async def create_task(self, *args, kind: str, content: str = None, due_at: str = None,
-                          priority: int = 1, performer_ids: list[int] = None, **kwargs):
+                          priority: int = 1, performer_ids: list[int] = None, **kwargs) -> dict:
         """
         Метод для создания новой задачи.
 
@@ -295,37 +295,41 @@ class Bot:
         task = {'task': task_data}
         return await BotMethods.create_task(*args, client=self.client, task=task, **kwargs)
 
-    async def get_reactions(self, message_id: int):
+    async def get_reactions(self, *args, message_id: int, **kwargs) -> dict:
         """
         Метод для получения актуального списка реакций на сообщение.
 
         Необходимые параметры:
 
-        message_id: int
+        message_id: int - Идентификатор сообщения, список реакций на которое необходимо получить.
 
+        Количество возвращаемых сущностей за один запрос (по умолчанию 50, максимум 50).
+
+        Страница выборки (по умолчанию 1).
         """
-        return await BotMethods.get_reactions(message_id, self.client)
+        return await BotMethods.get_reactions(*args, id=message_id, client=self.client, **kwargs)
 
-    async def delete_reaction(self, message_id: int, reaction: dict):
+    async def delete_reaction(self, *args, message_id: int, code: str, **kwargs) -> None:
         """
         Метод для удаления реакции на сообщение.
 
         Необходимые параметры:
 
-        {code: str - Emoji символ реакции}
+        message_id: int - Идентификатор сообщения, у которого удаляется реакция.
+
+        code: str - Emoji символ реакции.
 
         """
         return await BotMethods.delete_reaction(
-            message_id, self.client, reaction
+            *args, id=message_id, client=self.client, code=code, **kwargs
         )
 
-    async def create_thread(self, message_id: int):
+    async def create_thread(self, *args, message_id: int, **kwargs) -> None:
         """
         Метод для создания нового треда к сообщению.
 
         Необходимые параметры:
 
-        message_id: int
-
+        message_id: int - Идентификатор сообщения, к которому создается тред.
         """
-        return await BotMethods.create_thread(message_id, self.client)
+        return await BotMethods.create_thread(*args, id=message_id, client=self.client, **kwargs)

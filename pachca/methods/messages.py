@@ -43,17 +43,18 @@ class MessagesMethods:
         return await client.make_request(request)
 
     @classmethod
-    async def get_reactions(cls, id: int, client: HttpClient):
+    async def get_reactions(cls, *args, id: int, client: HttpClient, **kwargs):
         request = Router.get_reactions(id)
         return await client.make_request(request)
 
     @classmethod
-    async def delete_reaction(cls, id: int, client: HttpClient, data: dict):
+    async def delete_reaction(cls, *args, id: int, client: HttpClient, code: str, **kwargs):
         request: Request = Router.delete_reaction(id)
-        request.data: RequestData = RequestData(**data).to_dict()
+        kwargs['code'] = code
+        request.data: RequestData = RequestData(**kwargs).to_dict()
         return await client.make_request(request)
 
     @classmethod
-    async def create_thread(cls, id: int, client: HttpClient):
+    async def create_thread(cls, *args, id: int, client: HttpClient, **kwargs):
         request = Router.create_thread(id)
         return await client.make_request(request)
