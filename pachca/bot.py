@@ -224,7 +224,7 @@ class Bot:
 
         id: int - Уникальный id беседы или канала.
         member_ids: list[int] - Массив идентификаторов пользователей, которые станут участниками.
-        silent: bool - 	Cоздавать в чате системное сообщение о добавлении участника, по умолчанию нет (False).
+        silent: bool - 	Cоздавать в чате системное сообщение о добавлении участника, по умолчанию - нет (False).
 
         """
         return await BotMethods.add_members_to_chat(
@@ -238,21 +238,26 @@ class Bot:
 
     async def add_tags_to_chat(
             self,
+            *args,
             id: int = None,
-            group_tag_ids: dict = None
+            group_tag_ids: list[int] = None,
+            **kwargs,
     ):
         """
         Метод для добавления тегов в состав участников беседы или канала.
         Необходимые параметры:
 
-        group_tag_ids: list[int] - Массив идентификаторов тегов,
-                                    которые станут участниками
+        id: int - Идентификатор беседы/канала.
+        group_tag_ids: list[int] - Массив идентификаторов тегов, которые станут участниками.
 
         """
+        # group_tag_ids = {'group_tag_ids': group_tag_ids}
         return await BotMethods.add_tags_to_chat(
-            self.client,
-            id,
-            group_tag_ids
+            *args,
+            client=self.client,
+            id=id,
+            group_tag_ids=group_tag_ids,
+            **kwargs,
         )
 
     async def add_reaction(self, message_id, data):
