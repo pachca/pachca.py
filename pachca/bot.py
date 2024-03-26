@@ -179,7 +179,7 @@ class Bot:
         Метод для получение информации о беседе или канале.
         Необходимые параметры:
 
-        id: int
+        id: int - Идентификатор беседы или канала
 
         """
         return await BotMethods.get_chat_by_id(*args, client=self.client, id=id, **kwargs)
