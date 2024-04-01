@@ -48,21 +48,15 @@ EXPECT_RESPONSE_DATA_CHATS = {
     ]
 }
 NEW_CHAT_DATA = {
-    "chat": {
-        "name": "🤿 aqua",
-        "member_ids": [186, 187],
-        "channel": True,
-        "public": False
-    }
+    "name": "🤿 aqua",
+    "member_ids": [186, 187],
+    "channel": True,
+    "public": False
 }
 UPDATE_CHAT_DATA = {
-    "chat": {
-        "name": "🤿 aqua",
-        "public": False
-    }
+    "name": "🤿 aqua",
+    "public": False
 }
 INCORRECT_CHAT_DATA = {
-    "chat": {
-        "name": 100000
-    }
+    "name": 100000
 }

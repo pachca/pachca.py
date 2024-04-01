@@ -1,18 +1,27 @@
 from typing import Any, Optional
+from enum import Enum
 
 from pydantic import BaseModel
+
+
+class FileType(str, Enum):
+    FILE = 'file'
+    IMAGE = 'image'
 
 
 class File(BaseModel):
     key: str
     name: str
-    file_type: str
+    file_type: FileType
     size: int
 
 
 class ChatData(BaseModel):
     name: str
     public: Optional[bool] = False
+    channel: Optional[bool] = False
+    member_ids: Optional[list[int]] = None
+    group_tag_ids: Optional[list[int]] = None
 
 
 class MessagesData(BaseModel):
@@ -34,6 +43,7 @@ class TaskData(BaseModel):
 class RequestData(BaseModel):
     message: Optional[MessagesData] = None
     code: Optional[str] = None
+    silent: Optional[bool] = False
     task: Optional[TaskData] = None
     chat: Optional[ChatData] = None
     member_ids: Optional[list[int]] = None

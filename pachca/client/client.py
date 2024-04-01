@@ -16,6 +16,10 @@ class HttpClient:
                 async with getattr(session, request.http_method)(request.url, json=request.data, data=request.file_data) as response:
 
                     data = await response.content.read()
+
+                    if data == b'':
+                        return ''
+
                     response_json = json.loads(data)
 
                     if response.status not in request.acceptable_statuses:

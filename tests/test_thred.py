@@ -15,7 +15,7 @@ class TestThred(TestBaseClient):
         при безошибочном выполнении ботом метода 'create_thread'.
         """
         self.mock.return_value = RESPONSE_NEW_THREAD
-        response = await self.bot.create_thread(TEST_ID)
+        response = await self.bot.create_thread(message_id=TEST_ID)
         self.assertEqual(
             RESPONSE_NEW_THREAD,
             response,
