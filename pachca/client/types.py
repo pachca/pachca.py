@@ -17,7 +17,7 @@ class File(BaseModel):
 
 
 class ChatData(BaseModel):
-    name: str
+    name: Optional[str] = None
     public: Optional[bool] = False
     channel: Optional[bool] = False
     member_ids: Optional[list[int]] = None
