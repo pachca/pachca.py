@@ -13,7 +13,7 @@ EXPECT_RESPONSE_DATA_USER = {
         "list_tags": [
             "Product",
             "Design"
-            ],
+        ],
         "custom_properties": [
             {
                 "id": 1678,
