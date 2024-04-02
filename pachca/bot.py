@@ -211,6 +211,25 @@ class Bot:
         chat_data = {'chat': chat}
         return await BotMethods.create_chat(*args, client=self.client, chat=chat_data, **kwargs)
 
+    async def update_chat(self, *args, id: int, name: str = None, public: bool = None, **kwargs) -> dict:
+        """
+        Метод для создания новой беседы или канала.
+        Необходимые параметры:
+
+        id: int - идентификатор беседы или канала.
+
+        name: str - Название
+        public: bool - Доступ: закрытый (по умолчанию, false) или открытый (true)
+        """
+        if name is None and public is None:
+            raise AttributeError('Обязательно наличие хотя бы одного из параметров: name или public')
+        chat = ChatData(
+            name=name,
+            public=public,
+        )
+        chat_data = {'chat': chat}
+        return await BotMethods.update_chat(*args, client=self.client, id=id, chat=chat_data, **kwargs)
+
     async def add_members_to_chat(
             self,
             *args,
@@ -335,3 +354,26 @@ class Bot:
         message_id: int - Идентификатор сообщения, к которому создается тред.
         """
         return await BotMethods.create_thread(*args, id=message_id, client=self.client, **kwargs)
+
+    async def delete_member_in_chat(self, *args, id: int, member_id: int, **kwargs) -> None:
+        """
+        Метод для добавления пользователей в состав участников
+        беседы или канала.
+        Необходимые параметры:
+
+        id: int - Уникальный id беседы или канала.
+        member_ids: int - Идентификатор пользователя, который будет удален из беседы или канала.
+
+        """
+        return await BotMethods.delete_member_in_chat(*args, client=self.client, id=id, member_id=member_id, **kwargs)
+
+    async def delete_tag_in_chat(self, *args, id: int, group_tag_id: int, **kwargs) -> None:
+        """
+        Метод для удаление тега в состав участников беседы или канала.
+        Необходимые параметры:
+
+        id: int - Идентификатор беседы/канала.
+        group_tag_id: int - Идентификатор тега, пользователи которого будут удалены из беседы/канала.
+
+        """
+        return await BotMethods.delete_tag_in_chat(*args, client=self.client, id=id, group_tag_id=group_tag_id, **kwargs)

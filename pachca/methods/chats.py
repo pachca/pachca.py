@@ -21,6 +21,12 @@ class ChatsMethods:
         return await client.make_request(request)
 
     @classmethod
+    async def update_chat(cls, *args, client: HttpClient, id: int, chat: ChatData, **kwargs):
+        request: Request = Router.update_chat(id)
+        request.data = RequestData(**chat).to_dict()
+        return await client.make_request(request)
+
+    @classmethod
     async def add_members_to_chat(
         cls,
         *args,
@@ -43,4 +49,14 @@ class ChatsMethods:
         kwargs['group_tag_ids'] = group_tag_ids
         request: Request = Router.add_tags_to_chat(id)
         request.data = RequestData(**kwargs).to_dict()
+        return await client.make_request(request)
+
+    @classmethod
+    async def delete_member_in_chat(cls, *args, client: HttpClient, id: int, member_id: int, **kwargs):
+        request: Request = Router.delete_member_in_chat(id=id, user_id=member_id)
+        return await client.make_request(request)
+
+    @classmethod
+    async def delete_tag_in_chat(cls, *args, client: HttpClient, id: int, group_tag_id: int, **kwargs):
+        request: Request = Router.delete_tags_in_chat(id=id, tag_id=group_tag_id)
         return await client.make_request(request)
