@@ -1,4 +1,4 @@
-from pachca.client import HttpClient, MessagesData, ChatData, TaskData, File, FileType
+from pachca.client import HttpClient, MessagesData, ChatData, TaskData, File, FileType, UserData, CustomProperties
 
 from pachca.methods import BotMethods
 
@@ -28,6 +28,82 @@ class Bot:
         """
         return await BotMethods.get_user_by_id(*args, client=self.client, id=id, **kwargs)
 
+    async def create_user(
+        self,
+        *args,
+        email,
+        first_name=None,
+        last_name=None,
+        nickname=None,
+        phone_number=None,
+        department=None,
+        role=None,
+        suspended=None,
+        list_tags=None,
+        custom_properties: CustomProperties = None,
+        skip_email_notify=None,
+        **kwargs,
+    ) -> dict:
+        """
+        Метод для создания нового сотрудника в вашей компании.
+
+
+        """
+        user_data = UserData(
+            first_name=first_name,
+            last_name=last_name,
+            nickname=nickname,
+            email=email,
+            phone_number=phone_number,
+            department=department,
+            role=role,
+            suspended=suspended,
+            list_tags=list_tags,
+            custom_properties=custom_properties,
+            skip_email_notify=skip_email_notify,
+        )
+        return await BotMethods.create_user(*args, client=self.client, user_data=user_data, **kwargs)
+
+    async def edit_user(
+        self,
+        *args,
+        email=None,
+        first_name=None,
+        last_name=None,
+        nickname=None,
+        phone_number=None,
+        department=None,
+        role=None,
+        suspended=None,
+        list_tags=None,
+        custom_properties=None,
+        skip_email_notify=None,
+        **kwargs,
+    ) -> dict:
+        """
+        Метод для редактирования сотрудника.
+        """
+        user_data = UserData(
+            first_name=first_name,
+            last_name=last_name,
+            nickname=nickname,
+            email=email,
+            phone_number=phone_number,
+            department=department,
+            role=role,
+            suspended=suspended,
+            list_tags=list_tags,
+            custom_properties=custom_properties,
+            skip_email_notify=skip_email_notify,
+        )
+        return await BotMethods.edit_user(*args, client=self.client, user_data=user_data, **kwargs)
+
+    async def delete_user(self, *args, id, **kwargs) -> dict:
+        """
+        Метод для удаления сотрудника.
+        """
+        return await BotMethods.delete_user(*args, client=self.client, id=id, **kwargs)
+
     async def get_group_tags(self, *args, **kwargs) -> dict:
         """
         Метод для получения актуального списка тегов сотрудников.
@@ -38,6 +114,7 @@ class Bot:
     async def get_tag_users(self, *args, tag_id: int, **kwargs) -> dict:
         """
         Метод для получения актуального списка сотрудников тега.
+
         Необходимые параметы:
 
         tag_id: int
@@ -58,6 +135,17 @@ class Bot:
 
         """
         return await BotMethods.upload_file(self.client, file_path, file_type)
+
+    async def custom_properties(self, entity_type: str) -> str:
+        """
+        Метод для получения актуального списка
+        дополнительных полей сотрудников в вашей компании.
+
+        Необходимые параметры:
+
+        entity_type: str - Тип сущности: сотрудник (user).
+        """
+        return await BotMethods.get_custom_properties(self.client, entity_type)
 
     async def send_message(
             self, *args, entity_id: int, content: str, entity_type: str = None,
@@ -102,8 +190,7 @@ class Bot:
             files=files,
             parent_message_id=parent_message_id,
         )
-        message = {'message': message_data}
-        return await BotMethods.send_messages(*args, client=self.client, message=message, **kwargs)
+        return await BotMethods.send_messages(*args, client=self.client, message_data=message_data, **kwargs)
 
     async def get_messages(
         self, *args, chat_id: int, per: int = None, page: int = 1, **kwargs
@@ -167,8 +254,7 @@ class Bot:
             content=content,
             files=files,
         )
-        message = {'message': message_data}
-        return await BotMethods.edit_message(*args, client=self.client, id=id, message=message, **kwargs)
+        return await BotMethods.edit_message(*args, client=self.client, id=id, message_data=message_data, **kwargs)
 
     async def get_chats(self, *args, **kwargs) -> dict:
         """
@@ -201,15 +287,14 @@ class Bot:
         public: bool - Доступ: закрытый (по умолчанию, false) или открытый
         (true)
         """
-        chat = ChatData(
+        chat_data = ChatData(
             name=name,
             member_ids=member_ids,
             group_tag_ids=group_tag_ids,
             channel=channel,
             public=public,
         )
-        chat_data = {'chat': chat}
-        return await BotMethods.create_chat(*args, client=self.client, chat=chat_data, **kwargs)
+        return await BotMethods.create_chat(*args, client=self.client, chat_data=chat_data, **kwargs)
 
     async def update_chat(self, *args, id: int, name: str = None, public: bool = None, **kwargs) -> dict:
         """
@@ -223,12 +308,11 @@ class Bot:
         """
         if name is None and public is None:
             raise AttributeError('Обязательно наличие хотя бы одного из параметров: name или public')
-        chat = ChatData(
+        chat_data = ChatData(
             name=name,
             public=public,
         )
-        chat_data = {'chat': chat}
-        return await BotMethods.update_chat(*args, client=self.client, id=id, chat=chat_data, **kwargs)
+        return await BotMethods.update_chat(*args, client=self.client, id=id, chat_data=chat_data, **kwargs)
 
     async def add_members_to_chat(
             self,
@@ -313,8 +397,7 @@ class Bot:
             priority=priority,
             performer_ids=performer_ids,
         )
-        task = {'task': task_data}
-        return await BotMethods.create_task(*args, client=self.client, task=task, **kwargs)
+        return await BotMethods.create_task(*args, client=self.client, task_data=task_data, **kwargs)
 
     async def get_reactions(self, *args, message_id: int, **kwargs) -> dict:
         """

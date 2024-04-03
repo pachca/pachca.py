@@ -7,10 +7,10 @@ class MessagesMethods:
 
     @classmethod
     async def send_messages(
-        cls, *args, client: HttpClient, message: MessagesData, **kwargs
+        cls, *args, client: HttpClient, message_data: MessagesData, **kwargs
     ) -> dict:
         request: Request = Router.send_messages()
-        request.data = RequestData(**message).to_dict()
+        request.data = RequestData(message_data=message_data).to_dict()
         return await client.make_request(request)
 
     @classmethod
@@ -29,17 +29,16 @@ class MessagesMethods:
 
     @classmethod
     async def edit_message(
-        cls, *args, client: HttpClient, id: int, message: MessagesData, **kwargs
+        cls, *args, client: HttpClient, id: int, message_data: MessagesData, **kwargs
     ) -> dict:
         request: Request = Router.edit_message(id)
-        request.data = RequestData(**message).to_dict()
+        request.data = RequestData(message_data=message_data).to_dict()
         return await client.make_request(request)
 
     @classmethod
     async def add_reaction(cls, *args, client: HttpClient, id: int, code: str, **kwargs):
         request: Request = Router.add_reaction(id)
-        kwargs['code'] = code
-        request.data: RequestData = RequestData(**kwargs).to_dict()
+        request.data = RequestData(code=code).to_dict()
         return await client.make_request(request)
 
     @classmethod
@@ -50,8 +49,7 @@ class MessagesMethods:
     @classmethod
     async def delete_reaction(cls, *args, id: int, client: HttpClient, code: str, **kwargs):
         request: Request = Router.delete_reaction(id)
-        kwargs['code'] = code
-        request.data: RequestData = RequestData(**kwargs).to_dict()
+        request.data = RequestData(code=code).to_dict()
         return await client.make_request(request)
 
     @classmethod

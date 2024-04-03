@@ -21,7 +21,6 @@ class HttpClient:
                         return ''
 
                     response_json = json.loads(data)
-
                     if response.status not in request.acceptable_statuses:
                         message = ', '.join([error['message'] for error in response_json['errors']])
                         raise WrongStatusError({
