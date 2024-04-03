@@ -2,7 +2,10 @@ from pydantic_core import ValidationError
 
 from tests.fixtures.chats import (EXPECT_RESPONSE_DATA_CHAT,
                                   EXPECT_RESPONSE_DATA_CHATS,
-                                  INCORRECT_CHAT_DATA, NEW_CHAT_DATA)
+                                  INCORRECT_CHAT_DATA,
+                                  NEW_CHAT_DATA,
+                                  UPDATE_CHAT_DATA,
+                                  NOT_CHAT_DATA)
 from tests.fixtures.common import TEST_ID
 from tests.test_base_client import TestBaseClient
 
@@ -78,42 +81,55 @@ class TestChats(TestBaseClient):
         ):
             await self.bot.create_chat(**new_chat_data)
 
-    # async def test_update_chats_correct_data(self) -> None:
-    #     """Тестирует метод 'put' c корректным телом запроса.
+    async def test_update_chats_correct_data(self) -> None:
+        """Тестирует метод 'update' c корректным телом запроса.
 
-    #     Проверяет корректность возвращаемых данных
-    #     (объект беседы, содержащийся в массиве 'data')
-    #     при безошибочном выполении клиентом метода 'put'.
-    #     """
-    #     update_chat_data = UPDATE_CHAT_DATA
-    #     self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
-    #     response = await self.client.put(
-    #         urljoin(self.chats_url, TEST_ID),
-    #         update_chat_data
-    #     )
-    #     self.assertEqual(
-    #         response,
-    #         EXPECT_RESPONSE_DATA_CHAT,
-    #         'При редактирование беседы/канала '
-    #         'возвращается информация об обновленном объекте'
-    #     )
+        Проверяет корректность возвращаемых данных
+        (объект беседы, содержащийся в массиве 'data')
+        при безошибочном выполении клиентом метода 'update'.
+        """
+        update_chat_data = UPDATE_CHAT_DATA
+        self.mock.return_value = EXPECT_RESPONSE_DATA_CHAT
+        response = await self.bot.update_chat(**update_chat_data)
+        self.assertEqual(
+            response,
+            EXPECT_RESPONSE_DATA_CHAT,
+            'При редактирование беседы/канала '
+            'возвращается информация об обновленном объекте'
+        )
 
-    # async def test_update_chat_incorrect_data(self) -> None:
-    #     """Тестирует метод 'put'c некорректным телом запроса.
+    async def test_update_chat_incorrect_data(self) -> None:
+        """Тестирует метод 'update'c некорректным телом запроса.
 
-    #     Проверяет корректность возвращаемых данных
-    #     (опсание ошибки, содержащееся в массиве errors)
-    #     при выполении клиентом метода 'put' с
-    #     некорректными телом запроса.
-    #     """
-    #     new_chat_data = INCORRECT_CHAT_DATA
-    #     self.mock.return_value = EXPECT_RESPONSE_ERRORS
-    #     response = await self.client.put(
-    #         urljoin(self.chats_url, TEST_ID),
-    #         new_chat_data
-    #     )
-    #     self.assertEqual(
-    #         response,
-    #         EXPECT_RESPONSE_ERRORS,
-    #         ERROR_ARRAY_MESSAGE
-    #     )
+        Проверяет корректность возвращаемых данных
+        (опсание ошибки, содержащееся в массиве errors)
+        при выполении клиентом метода 'update' с
+        некорректными телом запроса.
+        """
+        update_chat_data = INCORRECT_CHAT_DATA
+        with self.assertRaises(
+            ValidationError,
+            msg=(
+                "При выполнении метода 'update_chat' c некорректным "
+                "телом запроса должна возникать ошибка ValidationError"
+            )
+        ):
+            await self.bot.update_chat(**update_chat_data)
+
+    async def test_update_chat_without_data(self) -> None:
+        """Тестирует метод 'update'c отсутствующим телом запроса.
+
+        Проверяет корректность возвращаемых данных
+        (опсание ошибки, содержащееся в массиве errors)
+        при выполении клиентом метода 'update' с
+        отсутствующим телом запроса.
+        """
+        update_chat_data = NOT_CHAT_DATA
+        with self.assertRaises(
+            AttributeError,
+            msg=(
+                "При выполнении метода 'update_chat' c отсутствующим "
+                "телом запроса должна возникать ошибка AttributeError"
+            )
+        ):
+            await self.bot.update_chat(**update_chat_data)

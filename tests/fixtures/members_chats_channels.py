@@ -5,3 +5,11 @@ PREPARE_CORRECT_TAGS = {'group_tag_ids': [86, 18]}
 PREPARE_INCORRECT_TAGS = {'group_tag_ids': 'incorrect'}
 
 PREPARE_INCORRECT_MEMBERS = 'incorrect'
+
+DELETE_INCORRECT_MEMBERS = {
+    "id": 1,
+}
+
+DELETE_INCORRECT_TAGS = {
+    "id": 1,
+}
