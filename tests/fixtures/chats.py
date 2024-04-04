@@ -54,9 +54,15 @@ NEW_CHAT_DATA = {
     "public": False
 }
 UPDATE_CHAT_DATA = {
+    "id": 12,
     "name": "🤿 aqua",
     "public": False
 }
 INCORRECT_CHAT_DATA = {
+    "id": 12,
     "name": 100000
+}
+
+NOT_CHAT_DATA = {
+    "id": 12,
 }

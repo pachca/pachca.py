@@ -3,7 +3,9 @@ from tests.fixtures.common import TEST_ID, EMPTY_ARRAY
 from tests.fixtures.members_chats_channels import (PREPARE_CORRECT_MEMBERS,
                                                    PREPARE_CORRECT_TAGS,
                                                    PREPARE_INCORRECT_MEMBERS,
-                                                   PREPARE_INCORRECT_TAGS)
+                                                   PREPARE_INCORRECT_TAGS,
+                                                   DELETE_INCORRECT_MEMBERS,
+                                                   DELETE_INCORRECT_TAGS)
 from tests.test_base_client import TestBaseClient
 
 
@@ -94,45 +96,79 @@ class TestMembersInChatsAndChannelsTest(TestBaseClient):
                 id=TEST_ID, group_tag_ids=PREPARE_INCORRECT_TAGS
             )
 
-#     async def test_del_correct(self) -> None:
-#         """Тестирует метод 'del'.
-#         Исключение пользователя из состава участников беседы/канала.
-#         Исключение тега из состава участников беседы/канала.
+    async def test_delete_member_in_chat_correct(self) -> None:
+        """Тестирует метод 'delete_member_in_chat'.
+        Исключение пользователя из состава участников беседы/канала.
 
-#         Проверяет корректность возвращаемых данных
-#         (без тела ответа) при безошибочном выполнении
-#         клиентом метода 'del'.
-#         """
-#         self.mock.return_value = self.prepare_response_correct_data
-#         for url in self.url_del:
-#             with self.subTest(url):
-#                 response = await self.client.delete(url)
-#                 self.assertEqual(
-#                     self.prepare_response_correct_data,
-#                     response,
-#                     'При безошибочном выполнение запроса '
-#                     'тело ответа отсутвует')
+        Проверяет корректность возвращаемых данных
+        (без тела ответа) при безошибочном выполнении
+        метода 'delete_member_in_chat'.
+        """
+        self.mock.return_value = EMPTY_ARRAY
+        response = await self.bot.delete_member_in_chat(
+            id=TEST_ID,
+            member_id=TEST_ID,
+        )
+        self.assertEqual(
+            EMPTY_ARRAY,
+            response,
+            'При безошибочном выполнение запроса тело ответа отсутвует',
+        )
 
-#     async def test_del_incorrect(self) -> None:
-#         """Тестирует метод 'del'.
-#         Исключение пользователя из состава участников беседы/канала.
-#         Исключение тега из состава участников беседы/канала.
+    async def test_delete_member_in_chat_incorrect(self) -> None:
+        """Тестирует метод 'delete_member_in_chat'.
+        Исключение пользователя из состава участников беседы/канала.
 
-#         Проверяет корректность возвращаемых данных
-#         (описание оишбки, содержащееся в массиве errors)
-#         при выполении клиентом метода 'del' с
-#         некорректными параметрами пути.
-#         """
-#         self.mock.return_value = self.prepare_response_errors
-#         for url in self.url_del:
-#             with self.subTest(url):
-#                 response = await self.client.delete(url)
-#                 self.assertEqual(
-#                     self.prepare_response_errors,
-#                     response,
-#                     f'При неккоректном запросе к {url} на удаление '
-#                     f'возвращается массив errors')
-#                 self.assertIsInstance(
-#                     response,
-#                     dict,
-#                     'Должен возвращаться объект типа dict')
+        Проверяет корректность возвращаемых данных
+        (описание оишбки, содержащееся в массиве errors)
+        при выполении клиентом метода 'delete_member_in_chat' с
+        некорректными параметрами пути.
+        """
+        with self.assertRaises(
+            TypeError,
+            msg=(
+                "При выполнении метода 'delete_member_in_chat' c некорректным "
+                "телом запроса должна возникать ошибка TypeError"
+            ),
+        ):
+            await self.bot.delete_member_in_chat(
+                **DELETE_INCORRECT_MEMBERS
+            )
+
+    async def test_delete_delete_tag_in_chat_correct(self) -> None:
+        """Тестирует метод 'delete_tag_in_chat'.
+        Исключение тега из состава участников беседы/канала.
+
+        Проверяет корректность возвращаемых данных
+        (без тела ответа) при безошибочном выполнении
+        метода 'delete_tag_in_chat'.
+        """
+        self.mock.return_value = EMPTY_ARRAY
+        response = await self.bot.delete_tag_in_chat(
+            id=TEST_ID,
+            group_tag_id=TEST_ID,
+        )
+        self.assertEqual(
+            EMPTY_ARRAY,
+            response,
+            'При безошибочном выполнение запроса тело ответа отсутвует',
+        )
+
+    async def test_delete_delete_tag_in_chat_correct(self) -> None:
+        """Тестирует метод 'delete_tag_in_chat'.
+        Исключение тега из состава участников беседы/канала.
+
+        Проверяет корректность возвращаемых данных
+        (без тела ответа) при безошибочном выполнении
+        метода 'delete_tag_in_chat'.
+        """
+        with self.assertRaises(
+            TypeError,
+            msg=(
+                "При выполнении метода 'delete_tag_in_chat' c некорректным "
+                "телом запроса должна возникать ошибка TypeError"
+            ),
+        ):
+            await self.bot.delete_tag_in_chat(
+                **DELETE_INCORRECT_TAGS
+            )
