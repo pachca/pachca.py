@@ -74,11 +74,25 @@ NEW_MESSAGE = {
     'content': 'Привет!',
 }
 
-NEW_MESSAGE_INCORRECT = {
+NEW_MESSAGE_INCORRECT_FILES = {
     'entity_type': 'discussion',
     'entity_id': 198,
     'content': 'Привет!',
     'files': 1,
+}
+
+NEW_MESSAGE_INCORRECT_ENTITY = {
+    'entity_type': 'discussion',
+    'entity_id': None,
+    'content': 'Привет!',
+    'files': [],
+}
+
+NEW_MESSAGE_INCORRECT_CONTENT = {
+    'entity_type': 'discussion',
+    'entity_id': 198,
+    'content': '',
+    'files': [],
 }
 
 RESPONSE_NEW_MESSAGE_DATA = {

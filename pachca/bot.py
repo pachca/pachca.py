@@ -94,7 +94,7 @@ class Bot:
         if len(str(content)) < 1:
             raise ValueError('Сообщение не может быть пустым!')
         if entity_id is None:
-            raise ValueError('Необходимо указать "entity_id"!')
+            raise AttributeError('Необходимо указать "entity_id"!')
         message_data = MessagesData(
             entity_type=entity_type,
             entity_id=entity_id,

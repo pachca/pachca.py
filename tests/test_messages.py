@@ -2,7 +2,9 @@ from pydantic_core import ValidationError
 from tests.fixtures.common import TEST_ID
 from tests.fixtures.messages import (EDIT_MESSAGE, INFO_MESSAGES,
                                      LIST_MESSAGES, NEW_MESSAGE,
-                                     NEW_MESSAGE_INCORRECT,
+                                     NEW_MESSAGE_INCORRECT_FILES,
+                                     NEW_MESSAGE_INCORRECT_ENTITY,
+                                     NEW_MESSAGE_INCORRECT_CONTENT,
                                      RESPONSE_NEW_MESSAGE_DATA)
 from tests.test_base_client import TestBaseClient
 
@@ -51,8 +53,43 @@ class TestMessages(TestBaseClient):
                 "телом запроса должна возникать ошибка ValidationError"
             )
         ):
-            mess = await self.bot.send_message(**NEW_MESSAGE_INCORRECT)
-            print(mess)
+            await self.bot.send_message(**NEW_MESSAGE_INCORRECT_FILES)
+
+    async def test_send_message_incorrect_entity_id(self) -> None:
+        """Тестирует метод 'send_message'.
+        Создание нового сообщения в беседу или канал,
+        личного сообщения пользователю или комментария в тред.
+
+        Проверяет корректность возвращаемых данных
+        (возникновение ошибки AttributeError)
+        при выполении клиентом метода 'post' с некорректными телом запроса.
+        """
+        with self.assertRaises(
+            AttributeError,
+            msg=(
+                "При выполнении метода 'send_message' c некорректным "
+                "телом запроса должна возникать ошибка AttributeError"
+            )
+        ):
+            await self.bot.send_message(**NEW_MESSAGE_INCORRECT_ENTITY)
+
+    async def test_send_message_incorrect_content(self) -> None:
+        """Тестирует метод 'send_message'.
+        Создание нового сообщения в беседу или канал,
+        личного сообщения пользователю или комментария в тред.
+
+        Проверяет корректность возвращаемых данных
+        (возникновение ошибки ValueError)
+        при выполении клиентом метода 'post' с некорректными телом запроса.
+        """
+        with self.assertRaises(
+            ValueError,
+            msg=(
+                "При выполнении метода 'send_message' c некорректным "
+                "телом 'content' запроса должна возникать ошибка ValueError"
+            )
+        ):
+            await self.bot.send_message(**NEW_MESSAGE_INCORRECT_CONTENT)
 
     async def test_get_message_by_id(self) -> None:
         """Тестирует метод 'get_message_by_id'.
@@ -133,4 +170,8 @@ class TestMessages(TestBaseClient):
                 "телом запроса должна возникать ошибка ValidationError"
             )
         ):
-            await self.bot.edit_message(id=TEST_ID, content=NEW_MESSAGE_INCORRECT['content'], files=NEW_MESSAGE_INCORRECT['files'])
+            await self.bot.edit_message(
+                id=TEST_ID,
+                content=NEW_MESSAGE_INCORRECT_FILES['content'],
+                files=NEW_MESSAGE_INCORRECT_FILES['files']
+            )
